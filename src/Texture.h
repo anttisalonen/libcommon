@@ -3,7 +3,7 @@
 
 #include <GL/gl.h>
 
-#include "common/SDLSurface.h"
+#include "SDLSurface.h"
 
 namespace Common {
 

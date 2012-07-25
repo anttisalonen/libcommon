@@ -5,7 +5,7 @@
 #include <SDL_image.h>
 #include <GL/gl.h>
 
-#include "common/Texture.h"
+#include "Texture.h"
 
 namespace Common {
 

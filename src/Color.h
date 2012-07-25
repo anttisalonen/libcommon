@@ -3,7 +3,7 @@
 
 #include <stdlib.h>
 
-#include "common/Serialization.h"
+#include "Serialization.h"
 
 namespace Common {
 

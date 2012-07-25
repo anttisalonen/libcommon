@@ -6,7 +6,7 @@
 
 #include <SDL_image.h>
 
-#include "common/Color.h"
+#include "Color.h"
 
 namespace Common {
 

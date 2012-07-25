@@ -1,6 +1,6 @@
 #include <stdlib.h>
 
-#include "common/Math.h"
+#include "Math.h"
 
 namespace Common {
 

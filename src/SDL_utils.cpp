@@ -6,7 +6,7 @@
 #include <SDL_ttf.h>
 #include <GL/gl.h>
 
-#include "common/SDL_utils.h"
+#include "SDL_utils.h"
 
 
 namespace Common {

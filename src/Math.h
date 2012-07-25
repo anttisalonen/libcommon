@@ -3,7 +3,7 @@
 
 #include <algorithm>
 
-#include "common/Vector3.h"
+#include "Vector3.h"
 
 #define PI 3.1415926535
 

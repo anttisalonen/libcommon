@@ -1,7 +1,7 @@
 #include <stdexcept>
 #include <sstream>
 
-#include "common/SDLSurface.h"
+#include "SDLSurface.h"
 
 namespace Common {
 
