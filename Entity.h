@@ -2,6 +2,9 @@
 #define COMMON_ENTITY_H
 
 #include "common/Vector3.h"
+#include "common/Math.h"
+
+#include <cmath>
 
 namespace Common {
 
@@ -18,6 +21,15 @@ class Entity {
 		inline void setAcceleration(const Vector3& v);
 		inline const Vector3& getPosition() const;
 		inline const Vector3& getVelocity() const;
+		inline void setXYRotation(float r);
+		inline void addXYRotation(float r);
+		inline float getXYRotation() const;
+		inline void setXYRotationalVelocity(float r);
+		inline void addXYRotationalVelocity(float r);
+		inline float getXYRotationalVelocity() const;
+		inline void setXYRotationalAcceleration(float r);
+		inline void addXYRotationalAcceleration(float r);
+		inline float getXYRotationalAcceleration() const;
 		inline virtual void update(float time);
 		static inline Vector3 vectorFromTo(const Entity<T>& me1,
 				const Entity<T>& me2);
@@ -29,6 +41,9 @@ class Entity {
 		Vector3 mPosition;
 		Vector3 mVelocity;
 		Vector3 mAcceleration;
+		float mRotation;
+		float mRotationalVelocity;
+		float mRotationalAcceleration;
 };
 
 template<typename T>
@@ -47,7 +62,10 @@ double Entity<T>::distanceBetween(const Entity<T>& me1,
 
 template<typename T>
 Entity<T>::Entity(T t)
-	: mT(t)
+	: mT(t),
+	mRotation(0.0f),
+	mRotationalVelocity(0.0f),
+	mRotationalAcceleration(0.0f)
 {
 }
 
@@ -100,11 +118,75 @@ const Vector3& Entity<T>::getVelocity() const
 }
 
 template<typename T>
+void Entity<T>::setXYRotation(float r)
+{
+	mRotation = 0.0f;
+	addXYRotation(r);
+}
+
+template<typename T>
+void Entity<T>::addXYRotation(float r)
+{
+	mRotation += r;
+	if(mRotation >= PI || mRotation < -PI) {
+		mRotation = std::fmod(mRotation, PI);
+	}
+}
+
+template<typename T>
+float Entity<T>::getXYRotation() const
+{
+	return mRotation;
+}
+
+template<typename T>
+void Entity<T>::setXYRotationalVelocity(float r)
+{
+	mRotationalVelocity = 0.0f;
+	addXYRotationalVelocity(r);
+}
+
+template<typename T>
+void Entity<T>::addXYRotationalVelocity(float r)
+{
+	mRotationalVelocity += r;
+}
+
+template<typename T>
+float Entity<T>::getXYRotationalVelocity() const
+{
+	return mRotationalVelocity;
+}
+
+template<typename T>
+void Entity<T>::setXYRotationalAcceleration(float r)
+{
+	mRotationalAcceleration = 0.0f;
+	addXYRotationalAcceleration(r);
+}
+
+template<typename T>
+void Entity<T>::addXYRotationalAcceleration(float r)
+{
+	mRotationalAcceleration += r;
+}
+
+template<typename T>
+float Entity<T>::getXYRotationalAcceleration() const
+{
+	return mRotationalAcceleration;
+}
+
+template<typename T>
 void Entity<T>::update(float time)
 {
 	mVelocity += mAcceleration * time;
 	mPosition += mVelocity * time;
 	mAcceleration = Vector3();
+
+	mRotationalVelocity += mRotationalAcceleration * time;
+	mRotation += mRotation * time;
+	mRotationalAcceleration = 0.0f;
 }
 
 }
