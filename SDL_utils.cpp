@@ -85,6 +85,77 @@ const char* SDL_utils::GLErrorToString(GLenum err)
 	return "unknown error";
 }
 
+void SDL_utils::drawSprite(const Texture& t,
+		const Rectangle& vertcoords,
+		const Rectangle& texcoords, float depth)
+{
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, t.getTexture());
+	glBegin(GL_QUADS);
+	glTexCoord2f(texcoords.x, texcoords.y);
+	glVertex3f(vertcoords.x, vertcoords.y, depth);
+	glTexCoord2f(texcoords.x + texcoords.w, texcoords.y);
+	glVertex3f(vertcoords.x + vertcoords.w, vertcoords.y, depth);
+	glTexCoord2f(texcoords.x + texcoords.w, texcoords.y + texcoords.h);
+	glVertex3f(vertcoords.x + vertcoords.w, vertcoords.y + vertcoords.h, depth);
+	glTexCoord2f(texcoords.x, texcoords.y + texcoords.h);
+	glVertex3f(vertcoords.x, vertcoords.y + vertcoords.h, depth);
+	glEnd();
+}
+
+void SDL_utils::drawText(TextMap& tm, TTF_Font* font, const Vector3& camera,
+		float scaleLevel, int screenWidth, int screenHeight,
+		float x, float y,
+		const FontConfig& f,
+		bool screencoordinates, bool centered)
+{
+	if(f.mText.size() == 0)
+		return;
+	auto it = tm.find(f);
+	if(it == tm.end()) {
+		SDL_Surface* text;
+		SDL_Color color = {f.mColor.r, f.mColor.g, f.mColor.b};
+
+		text = TTF_RenderUTF8_Blended(font, f.mText.c_str(), color);
+		if(!text) {
+			fprintf(stderr, "Could not render text: %s\n",
+					TTF_GetError());
+			return;
+		}
+		else {
+			boost::shared_ptr<Texture> texture(new Texture(text));
+			boost::shared_ptr<TextTexture> ttexture(new TextTexture(texture, text->w, text->h));
+			auto it2 = tm.insert(std::make_pair(f, ttexture));
+			it = it2.first;
+			SDL_FreeSurface(text);
+		}
+
+	}
+
+	assert(it != tm.end());
+	float spritex, spritey;
+	float spritewidth, spriteheight;
+	if(screencoordinates) {
+		spritex = x;
+		spritey = y;
+		spritewidth  = it->first.mScale * it->second->mWidth;
+		spriteheight = it->first.mScale * it->second->mHeight;
+	}
+	else {
+		spritex = (-camera.x + x) * scaleLevel + screenWidth * 0.5f;
+		spritey = (-camera.y + y) * scaleLevel + screenHeight * 0.5f;
+		spritewidth  = scaleLevel * it->first.mScale * it->second->mWidth;
+		spriteheight = scaleLevel * it->first.mScale * it->second->mHeight;
+	}
+	if(centered) {
+		spritex -= spritewidth * 0.5f;
+	}
+
+	drawSprite(*it->second->mTexture, Rectangle(spritex, spritey,
+				spritewidth, spriteheight),
+			Rectangle(0, 1, 1, -1), 0.0f);
+}
+
 
 }
 
