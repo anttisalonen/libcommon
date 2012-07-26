@@ -6,6 +6,9 @@
 #include "Vector3.h"
 
 #define PI 3.1415926535
+#define TWO_PI 6.283185306
+#define HALF_PI 1.570796326
+#define QUARTER_PI 0.785398163
 
 namespace Common {
 
