@@ -12,7 +12,7 @@ namespace Common {
 
 	class SDL_utils {
 		public:
-			static SDL_Surface* initSDL(int w, int h);
+			static SDL_Surface* initSDL(int w, int h, const char* caption);
 			static void setupOrthoScreen(int w, int h);
 			static const char* GLErrorToString(GLenum err);
 			static void drawSprite(const Common::Texture& t,

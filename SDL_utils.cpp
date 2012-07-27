@@ -11,7 +11,7 @@
 
 namespace Common {
 
-SDL_Surface* SDL_utils::initSDL(int w, int h)
+SDL_Surface* SDL_utils::initSDL(int w, int h, const char* caption)
 {
 	SDL_Surface* screen;
 	if (SDL_Init(SDL_INIT_EVERYTHING) == -1) {
@@ -42,7 +42,8 @@ SDL_Surface* SDL_utils::initSDL(int w, int h)
 		throw std::runtime_error("SDL_ttf");
 	}
 	SDL_EnableKeyRepeat(0, SDL_DEFAULT_REPEAT_INTERVAL);
-	SDL_WM_SetCaption("Freekick 3", nullptr);
+	if(caption)
+		SDL_WM_SetCaption(caption, nullptr);
 
 	return screen;
 }
