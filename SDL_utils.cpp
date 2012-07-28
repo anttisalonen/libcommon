@@ -7,6 +7,7 @@
 #include <GL/gl.h>
 
 #include "SDL_utils.h"
+#include "Math.h"
 
 
 namespace Common {
@@ -157,6 +158,20 @@ void SDL_utils::drawText(TextMap& tm, TTF_Font* font, const Vector3& camera,
 			Rectangle(0, 1, 1, -1), 0.0f);
 }
 
+void SDL_utils::drawCircle(float x, float y, float rad)
+{
+	glDisable(GL_TEXTURE_2D);
+	glBegin(GL_LINE_STRIP);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	for(int i = 0; i < 32; i++) {
+		float v = PI * i / 16.0f;
+		glVertex3f(rad * sin(v) + x,
+				rad * cos(v) + y,
+				0.0f);
+	}
+	glVertex3f(x, y + rad, 0.0f);
+	glEnd();
+}
 
 }
 

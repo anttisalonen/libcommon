@@ -23,6 +23,7 @@ namespace Common {
 					float x, float y,
 					const FontConfig& f,
 					bool screencoordinates, bool centered);
+			static void drawCircle(float x, float y, float rad);
 	};
 
 }
