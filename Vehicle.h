@@ -5,9 +5,18 @@
 
 namespace Common {
 
-class Vehicle : public Entity {
+class Obstacle : public Entity {
 	public:
-		inline Vehicle(float maxspeed, float maxacc);
+		inline Obstacle(float radius) : mRadius(radius) { }
+		float getRadius() const { return mRadius; }
+
+	protected:
+		float mRadius;
+};
+
+class Vehicle : public Obstacle {
+	public:
+		inline Vehicle(float radius, float maxspeed, float maxacc);
 		float getMaxSpeed() const { return mMaxSpeed; }
 		float getMaxAcceleration() const { return mMaxAcceleration; }
 		virtual inline void update(float time) override;
@@ -15,12 +24,11 @@ class Vehicle : public Entity {
 	protected:
 		float mMaxSpeed;
 		float mMaxAcceleration;
-		
-	private:
 };
 
-Vehicle::Vehicle(float maxspeed, float maxacc)
-	: mMaxSpeed(maxspeed),
+Vehicle::Vehicle(float radius, float maxspeed, float maxacc)
+	: Obstacle(radius),
+	mMaxSpeed(maxspeed),
 	mMaxAcceleration(maxacc)
 {
 }
