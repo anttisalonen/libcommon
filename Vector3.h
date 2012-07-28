@@ -1,8 +1,10 @@
-#ifndef VECTOR3_H
-#define VECTOR3_H
+#ifndef COMMON_VECTOR3_H
+#define COMMON_VECTOR3_H
 
 #include <iostream>
 #include <math.h>
+
+namespace Common {
 
 class Vector3 {
 	public:
@@ -128,6 +130,8 @@ inline void Vector3::zero()
 	x = 0.0f;
 	y = 0.0f;
 	z = 0.0f;
+}
+
 }
 
 #endif
