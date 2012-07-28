@@ -8,11 +8,21 @@ double Math::pointToLineDistance(const Vector3& l1,
 		const Vector3& l2,
 		const Vector3& p)
 {
-	double nlen = sqrt((l2.x - l1.x) * (l2.x - l1.x) + (l2.y - l1.y) * (l2.y - l1.y));
-	if(nlen)
-		return fabs((l2.x - l1.x) * (l1.y - p.y) - (l1.x - p.x) * (l2.y - l1.y)) / nlen;
-	else
-		return (p - l1).length();
+	// http://stackoverflow.com/questions/849211/shortest-distance-between-a-point-and-a-line-segment
+	// Return minimum distance between line segment l1w and point p
+	const float dist2 = l1.distance2(l2); // i.e. |l2-l1|^2 -  avoid a sqrt
+	if (dist2 == 0.0f)
+		return p.distance(l1);   // l1 == l2 case
+	// Consider the line extending the segment, parameterized as l1 + t (l2 - l1).
+	// We find projection of point p onto the line. 
+	// It falls where t = [(p-l1) . (l2-l1)] / |l2-l1|^2
+	const float t = (p - l1).dot(l2 - l1) * (1.0f / dist2);
+	if (t < 0.0f)
+		return p.distance(l1);       // Beyond the 'l1' end of the segment
+	else if (t > 1.0f)
+		return p.distance(l2);  // Beyond the 'l2' end of the segment
+	const Vector3 projection = l1 + (l2 - l1) * t;  // Projection falls on the segment
+	return p.distance(projection);
 }
 
 Vector3 Math::lineLineIntersection2D(const Vector3& p1,
