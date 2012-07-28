@@ -2,17 +2,19 @@
 #define COMMON_STEERING_h
 
 #include "Vector3.h"
-#include "Entity.h"
+#include "Vehicle.h"
 
 namespace Common {
 
 class Steering {
 	public:
-		Steering(const Entity& e);
+		Steering(const Vehicle& e);
 		Vector3 seek(const Vector3& tgtpos);
+		Vector3 flee(const Vector3& threatpos);
+		Vector3 arrive(const Vector3& tgtpos);
 
 	private:
-		const Entity& mEntity;
+		const Vehicle& mUnit;
 };
 
 }

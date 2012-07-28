@@ -26,6 +26,7 @@ class Vector3 {
 		inline bool null() const;
 		inline double dot(const Vector3& v) const;
 		inline void zero();
+		inline void truncate(float len);
 };
 
 inline std::ostream& operator<<(std::ostream& out, const Vector3& vec)
@@ -130,6 +131,16 @@ inline void Vector3::zero()
 	x = 0.0f;
 	y = 0.0f;
 	z = 0.0f;
+}
+
+inline void Vector3::truncate(float len)
+{
+	if(length2() > len * len) {
+		normalize();
+		x *= len;
+		y *= len;
+		z *= len;
+	}
 }
 
 }

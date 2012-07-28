@@ -29,11 +29,6 @@ class Entity {
 		inline void addXYRotationalAcceleration(float r);
 		inline float getXYRotationalAcceleration() const;
 		inline virtual void update(float time);
-		// returns true if maximum reached
-		inline virtual bool capXYSpeed(float maxspeed);
-		// returns true if falling down
-		inline virtual bool applyGravity(float time, float ground = 0.0f, float gravity = 9.81f);
-		inline virtual void updateComplete(float time, float maxspeed, float ground = 0.0f, float gravity = 9.81f);
 		static inline Vector3 vectorFromTo(const Entity& me1,
 				const Entity& me2);
 		static inline double distanceBetween(const Entity& me1,
@@ -162,40 +157,6 @@ void Entity::update(float time)
 	mRotationalVelocity += mRotationalAcceleration * time;
 	mRotation += mRotation * time;
 	mRotationalAcceleration = 0.0f;
-}
-
-bool Entity::capXYSpeed(float maxspeed)
-{
-	Vector3 planevel(mVelocity);
-	planevel.z = 0.0f;
-	if(planevel.length() > maxspeed) {
-		planevel.normalize();
-		planevel *= maxspeed;
-		mVelocity.x = planevel.x;
-		mVelocity.y = planevel.y;
-		return true;
-	}
-	return false;
-}
-
-bool Entity::applyGravity(float time, float ground, float gravity)
-{
-	if(mPosition.z < ground) {
-		mVelocity.z = std::max(0.0f, mVelocity.z);
-		mPosition.z = std::max(ground, mPosition.z);
-		return false;
-	}
-	else {
-		mVelocity.z -= gravity * time;
-		return true;
-	}
-}
-
-void Entity::updateComplete(float time, float maxspeed, float ground, float gravity)
-{
-	Entity::update(time);
-	capXYSpeed(maxspeed);
-	applyGravity(time, ground, gravity);
 }
 
 }
