@@ -33,6 +33,8 @@ class Entity {
 				const Entity& me2);
 		static inline double distanceBetween(const Entity& me1,
 				const Entity& me2);
+		inline float getSpeed() const;
+		inline void setAutomaticHeading();
 
 	protected:
 		Vector3 mPosition;
@@ -157,6 +159,19 @@ void Entity::update(float time)
 	mRotationalVelocity += mRotationalAcceleration * time;
 	mRotation += mRotation * time;
 	mRotationalAcceleration = 0.0f;
+}
+
+inline float Entity::getSpeed() const
+{
+	return mVelocity.length();
+}
+
+void Entity::setAutomaticHeading()
+{
+	if(mVelocity.null()) {
+		return;
+	}
+	mRotation = atan2(mVelocity.y, mVelocity.x);
 }
 
 }

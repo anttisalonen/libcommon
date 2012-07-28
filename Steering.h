@@ -12,9 +12,16 @@ class Steering {
 		Vector3 seek(const Vector3& tgtpos);
 		Vector3 flee(const Vector3& threatpos);
 		Vector3 arrive(const Vector3& tgtpos);
+		Vector3 pursuit(const Vehicle& tgt);
+		Vector3 evade(const Vehicle& threat);
+		Vector3 wander();
 
 	private:
 		const Vehicle& mUnit;
+		float mWanderRadius;
+		float mWanderDistance;
+		float mWanderJitter;
+		Vector3 mWanderTarget;
 };
 
 }

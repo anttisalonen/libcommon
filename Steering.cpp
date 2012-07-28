@@ -1,9 +1,13 @@
 #include "Steering.h"
+#include "Random.h"
 
 namespace Common {
 
 Steering::Steering(const Vehicle& e)
-	: mUnit(e)
+	: mUnit(e),
+	mWanderRadius(2.0f),
+	mWanderDistance(3.0f),
+	mWanderJitter(1.0f)
 {
 }
 
@@ -34,6 +38,45 @@ Vector3 Steering::arrive(const Vector3& tgtpos)
 	Vector3 desiredVelocity = dist * (speed / distlen);
 
 	return desiredVelocity - mUnit.getVelocity();
+}
+
+Vector3 Steering::pursuit(const Vehicle& tgt)
+{
+	Vector3 totgt = tgt.getPosition() - mUnit.getPosition();
+
+	float relHeading = mUnit.getVelocity().dot(tgt.getVelocity());
+
+	if((totgt.dot(mUnit.getPosition()) > 0.0f) && (relHeading < -0.95f)) {
+		return seek(tgt.getPosition());
+	}
+
+	float lookAheadTime = totgt.length() * (1.0f / mUnit.getMaxSpeed() + tgt.getSpeed());
+
+	return seek(tgt.getPosition() + tgt.getVelocity() * lookAheadTime);
+}
+
+Vector3 Steering::evade(const Vehicle& threat)
+{
+	Vector3 tothreat = threat.getPosition() - mUnit.getPosition();
+
+	float lookAheadTime = tothreat.length() * (1.0f / mUnit.getMaxSpeed() + threat.getSpeed());
+
+	return flee(threat.getPosition() + threat.getVelocity() * lookAheadTime);
+}
+
+Vector3 Steering::wander()
+{
+	mWanderTarget += Vector3(Random::clamped() * mWanderJitter,
+			Random::clamped() * mWanderJitter,
+			0.0f);
+
+	mWanderTarget.normalize();
+
+	mWanderTarget *= mWanderRadius;
+
+	Vector3 target = mUnit.getPosition() + mUnit.getVelocity().normalized() * mWanderDistance + mWanderTarget;
+
+	return target - mUnit.getPosition();
 }
 
 }
