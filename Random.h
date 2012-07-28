@@ -6,6 +6,7 @@ namespace Common {
 class Random {
 	public:
 		static float clamped(); // between -1 and 1
+		static float uniform(); // between 0 and 1
 };
 
 }
