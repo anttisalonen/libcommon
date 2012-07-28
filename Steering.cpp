@@ -1,4 +1,8 @@
+#include <cfloat>
+
 #include "Steering.h"
+
+#include "Math.h"
 #include "Random.h"
 
 namespace Common {
@@ -77,6 +81,70 @@ Vector3 Steering::wander()
 	Vector3 target = mUnit.getPosition() + mUnit.getVelocity().normalized() * mWanderDistance + mWanderTarget;
 
 	return target - mUnit.getPosition();
+}
+
+Vector3 Steering::obstacleAvoidance(const std::vector<Obstacle*> obstacles)
+{
+	Obstacle* nearest = nullptr;
+
+	float distToNearest = FLT_MAX;
+
+	if(mUnit.getVelocity().null())
+		return Vector3();
+
+	for(auto o : obstacles) {
+		float dot = mUnit.getPosition().dot(o->getPosition());
+		if(dot < 0.0f) {
+			continue;
+		}
+
+		float rad = mUnit.getRadius() + o->getRadius();
+
+		float dist = Math::pointToLineDistance(mUnit.getPosition(),
+				mUnit.getPosition() + mUnit.getVelocity() * 0.5f,
+				o->getPosition()) - rad;
+		if(dist < distToNearest) {
+			distToNearest = dist;
+			nearest = o;
+		}
+	}
+
+	if(!nearest) {
+		return Vector3();
+	}
+
+	Vector3 vecFromObj = Entity::vectorFromTo(*nearest, mUnit);
+	if(vecFromObj.length() < mUnit.getRadius() + nearest->getRadius()) {
+		// we're inside the obstacle
+		return vecFromObj.normalized() * 100.0f;
+	}
+	distToNearest = std::max(0.01f, distToNearest);
+	float velmultiplier = 0.1f + mUnit.getVelocity().length() * 0.5f;
+	float multiplier = velmultiplier / distToNearest;
+
+	Vector3 res = vecFromObj.normalized() * multiplier;
+
+	return res;
+}
+
+bool Steering::accumulate(Vector3& runningTotal, const Vector3& add)
+{
+	float magnitude = runningTotal.length();
+	float remaining = mUnit.getMaxAcceleration() - magnitude;
+
+	if(remaining <= 0.0f)
+		return false;
+
+	double toAdd = add.length();
+
+	if(toAdd < remaining) {
+		runningTotal += add;
+		return true;
+	}
+	else {
+		runningTotal += add.normalized() * remaining;
+		return false;
+	}
 }
 
 }

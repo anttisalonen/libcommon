@@ -15,6 +15,8 @@ class Steering {
 		Vector3 pursuit(const Vehicle& tgt);
 		Vector3 evade(const Vehicle& threat);
 		Vector3 wander();
+		Vector3 obstacleAvoidance(const std::vector<Obstacle*> obstacles);
+		bool accumulate(Vector3& runningTotal, const Vector3& add);
 
 	private:
 		const Vehicle& mUnit;
