@@ -1,19 +1,17 @@
 #ifndef COMMON_ENTITY_H
 #define COMMON_ENTITY_H
 
-#include "common/Vector3.h"
-#include "common/Math.h"
+#include "Vector3.h"
+#include "Math.h"
 
 #include <cmath>
 
 namespace Common {
 
-template<typename T>
 class Entity {
 	public:
-		Entity(T t);
+		inline Entity();
 		virtual ~Entity() { }
-		inline const T getT() const;
 		inline void move(const Vector3& v);
 		inline void setVelocity(const Vector3& v);
 		inline void addVelocity(const Vector3& v);
@@ -36,13 +34,12 @@ class Entity {
 		// returns true if falling down
 		inline virtual bool applyGravity(float time, float ground = 0.0f, float gravity = 9.81f);
 		inline virtual void updateComplete(float time, float maxspeed, float ground = 0.0f, float gravity = 9.81f);
-		static inline Vector3 vectorFromTo(const Entity<T>& me1,
-				const Entity<T>& me2);
-		static inline double distanceBetween(const Entity<T>& me1,
-				const Entity<T>& me2);
+		static inline Vector3 vectorFromTo(const Entity& me1,
+				const Entity& me2);
+		static inline double distanceBetween(const Entity& me1,
+				const Entity& me2);
 
 	protected:
-		T mT;
 		Vector3 mPosition;
 		Vector3 mVelocity;
 		Vector3 mAcceleration;
@@ -51,86 +48,67 @@ class Entity {
 		float mRotationalAcceleration;
 };
 
-template<typename T>
-Vector3 Entity<T>::vectorFromTo(const Entity<T>& me1,
-		const Entity<T>& me2)
+Vector3 Entity::vectorFromTo(const Entity& me1,
+		const Entity& me2)
 {
-	return Vector3(me2.getPosition().v - me1.getPosition().v);
+	return Vector3(me2.getPosition() - me1.getPosition());
 }
 
-template<typename T>
-double Entity<T>::distanceBetween(const Entity<T>& me1,
-		const Entity<T>& me2)
+double Entity::distanceBetween(const Entity& me1,
+		const Entity& me2)
 {
-	return vectorFromTo(me1, me2).v.length();
+	return vectorFromTo(me1, me2).length();
 }
 
-template<typename T>
-Entity<T>::Entity(T t)
-	: mT(t),
-	mRotation(0.0f),
+Entity::Entity()
+	: mRotation(0.0f),
 	mRotationalVelocity(0.0f),
 	mRotationalAcceleration(0.0f)
 {
 }
 
-template<typename T>
-const T Entity<T>::getT() const
-{
-	return mT;
-}
-
-template<typename T>
-void Entity<T>::move(const Vector3& v)
+void Entity::move(const Vector3& v)
 {
 	mPosition += v;
 }
 
-template<typename T>
-void Entity<T>::setPosition(const Vector3& v)
+void Entity::setPosition(const Vector3& v)
 {
 	mPosition = v;
 }
 
-template<typename T>
-void Entity<T>::setVelocity(const Vector3& v)
+void Entity::setVelocity(const Vector3& v)
 {
 	mVelocity = v;
 }
 
-template<typename T>
-void Entity<T>::addVelocity(const Vector3& v)
+void Entity::addVelocity(const Vector3& v)
 {
 	mVelocity += v;
 }
 
-template<typename T>
-void Entity<T>::setAcceleration(const Vector3& v)
+void Entity::setAcceleration(const Vector3& v)
 {
 	mAcceleration = v;
 }
 
-template<typename T>
-const Vector3& Entity<T>::getPosition() const
+const Vector3& Entity::getPosition() const
 {
 	return mPosition;
 }
 
-template<typename T>
-const Vector3& Entity<T>::getVelocity() const
+const Vector3& Entity::getVelocity() const
 {
 	return mVelocity;
 }
 
-template<typename T>
-void Entity<T>::setXYRotation(float r)
+void Entity::setXYRotation(float r)
 {
 	mRotation = 0.0f;
 	addXYRotation(r);
 }
 
-template<typename T>
-void Entity<T>::addXYRotation(float r)
+void Entity::addXYRotation(float r)
 {
 	mRotation += r;
 	if(mRotation >= PI || mRotation < -PI) {
@@ -138,52 +116,44 @@ void Entity<T>::addXYRotation(float r)
 	}
 }
 
-template<typename T>
-float Entity<T>::getXYRotation() const
+float Entity::getXYRotation() const
 {
 	return mRotation;
 }
 
-template<typename T>
-void Entity<T>::setXYRotationalVelocity(float r)
+void Entity::setXYRotationalVelocity(float r)
 {
 	mRotationalVelocity = 0.0f;
 	addXYRotationalVelocity(r);
 }
 
-template<typename T>
-void Entity<T>::addXYRotationalVelocity(float r)
+void Entity::addXYRotationalVelocity(float r)
 {
 	mRotationalVelocity += r;
 }
 
-template<typename T>
-float Entity<T>::getXYRotationalVelocity() const
+float Entity::getXYRotationalVelocity() const
 {
 	return mRotationalVelocity;
 }
 
-template<typename T>
-void Entity<T>::setXYRotationalAcceleration(float r)
+void Entity::setXYRotationalAcceleration(float r)
 {
 	mRotationalAcceleration = 0.0f;
 	addXYRotationalAcceleration(r);
 }
 
-template<typename T>
-void Entity<T>::addXYRotationalAcceleration(float r)
+void Entity::addXYRotationalAcceleration(float r)
 {
 	mRotationalAcceleration += r;
 }
 
-template<typename T>
-float Entity<T>::getXYRotationalAcceleration() const
+float Entity::getXYRotationalAcceleration() const
 {
 	return mRotationalAcceleration;
 }
 
-template<typename T>
-void Entity<T>::update(float time)
+void Entity::update(float time)
 {
 	mVelocity += mAcceleration * time;
 	mPosition += mVelocity * time;
@@ -194,8 +164,7 @@ void Entity<T>::update(float time)
 	mRotationalAcceleration = 0.0f;
 }
 
-template<typename T>
-bool Entity<T>::capXYSpeed(float maxspeed)
+bool Entity::capXYSpeed(float maxspeed)
 {
 	Vector3 planevel(mVelocity);
 	planevel.z = 0.0f;
@@ -209,8 +178,7 @@ bool Entity<T>::capXYSpeed(float maxspeed)
 	return false;
 }
 
-template<typename T>
-bool Entity<T>::applyGravity(float time, float ground, float gravity)
+bool Entity::applyGravity(float time, float ground, float gravity)
 {
 	if(mPosition.z < ground) {
 		mVelocity.z = std::max(0.0f, mVelocity.z);
@@ -223,10 +191,9 @@ bool Entity<T>::applyGravity(float time, float ground, float gravity)
 	}
 }
 
-template<typename T>
-void Entity<T>::updateComplete(float time, float maxspeed, float ground, float gravity)
+void Entity::updateComplete(float time, float maxspeed, float ground, float gravity)
 {
-	Entity<T>::update(time);
+	Entity::update(time);
 	capXYSpeed(maxspeed);
 	applyGravity(time, ground, gravity);
 }
