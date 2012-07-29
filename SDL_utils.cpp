@@ -91,6 +91,7 @@ void SDL_utils::drawSprite(const Texture& t,
 		const Rectangle& vertcoords,
 		const Rectangle& texcoords, float depth)
 {
+	glColor3f(1.0f, 1.0f, 1.0f);
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, t.getTexture());
 	glBegin(GL_QUADS);
@@ -170,6 +171,16 @@ void SDL_utils::drawCircle(float x, float y, float rad)
 				0.0f);
 	}
 	glVertex3f(x, y + rad, 0.0f);
+	glEnd();
+}
+
+void SDL_utils::drawPoint(const Vector3& coords, float size, const Common::Color& col)
+{
+	glDisable(GL_TEXTURE_2D);
+	glPointSize(size);
+	glBegin(GL_POINTS);
+	glColor3f(col.r, col.g, col.b);
+	glVertex3f(coords.x, coords.y, 0.0f);
 	glEnd();
 }
 

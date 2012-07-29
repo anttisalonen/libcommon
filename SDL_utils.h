@@ -7,6 +7,7 @@
 #include "Texture.h"
 #include "Rectangle.h"
 #include "FontConfig.h"
+#include "Color.h"
 
 namespace Common {
 
@@ -24,6 +25,7 @@ namespace Common {
 					const FontConfig& f,
 					bool screencoordinates, bool centered);
 			static void drawCircle(float x, float y, float rad);
+			static void drawPoint(const Vector3& coords, float size, const Common::Color& col);
 	};
 
 }
