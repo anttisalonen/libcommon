@@ -96,4 +96,25 @@ Vector3 Math::segmentSegmentIntersection2D(const Vector3& p1,
 	return p + r * t;
 }
 
+bool Math::lineCircleIntersect(const Vector3& l1,
+		const Vector3& l2,
+		const Vector3& c, float radius)
+{
+	float D = l1.x * l2.y - l2.x * l1.y;
+	float dx = l2.x - l1.x;
+	float dy = l2.y - l1.y;
+	float dr = sqrt(dx * dx + dy * dy);
+	float disc = radius * radius * dr * dr - D * D;
+	return disc > 0.0f;
 }
+
+bool Math::segmentCircleIntersect(const Vector3& l1,
+		const Vector3& l2,
+		const Vector3& c, float radius)
+{
+	float f = pointToSegmentDistance(l1, l2, c, nullptr);
+	return f < radius;
+}
+
+}
+
