@@ -54,7 +54,7 @@ Vector3 Steering::pursuit(const Vehicle& tgt)
 		return seek(tgt.getPosition());
 	}
 
-	float lookAheadTime = totgt.length() * (1.0f / mUnit.getMaxSpeed() + tgt.getSpeed());
+	float lookAheadTime = totgt.length() * (1.0f / (mUnit.getMaxSpeed() + tgt.getSpeed()));
 
 	return seek(tgt.getPosition() + tgt.getVelocity() * lookAheadTime);
 }
