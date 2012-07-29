@@ -35,6 +35,7 @@ class Entity {
 				const Entity& me2);
 		inline float getSpeed() const;
 		inline void setAutomaticHeading();
+		inline Vector3 getHeadingVector() const;
 
 	protected:
 		Vector3 mPosition;
@@ -173,6 +174,12 @@ void Entity::setAutomaticHeading()
 	}
 	mRotation = atan2(mVelocity.y, mVelocity.x);
 }
+
+inline Vector3 Entity::getHeadingVector() const
+{
+	return Vector3(cos(mRotation), sin(mRotation), 0.0f);
+}
+
 
 }
 
