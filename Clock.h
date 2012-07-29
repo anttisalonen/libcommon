@@ -30,6 +30,16 @@ class Countdown {
 		bool mChecked;
 };
 
+class SteadyTimer {
+	public:
+		SteadyTimer(float steptime);
+		bool check(float elapsedtime);
+
+	private:
+		float mStepTime;
+		float mLeftTime;
+};
+
 }
 
 #endif

@@ -6,6 +6,7 @@
 #include <algorithm>
 
 #include "Clock.h"
+#include "Random.h"
 
 namespace Common {
 
@@ -97,6 +98,24 @@ void Countdown::clear()
 {
 	mNow = 0.0f;
 	mChecked = true;
+}
+
+SteadyTimer::SteadyTimer(float steptime)
+	: mStepTime(steptime)
+{
+	mLeftTime = Random::uniform() * mStepTime;
+}
+
+bool SteadyTimer::check(float elapsedtime)
+{
+	mLeftTime -= elapsedtime;
+	if(mLeftTime <= 0.0f) {
+		mLeftTime = mStepTime;
+		return true;
+	}
+	else {
+		return false;
+	}
 }
 
 }
