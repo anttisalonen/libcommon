@@ -29,6 +29,7 @@ class Vector3 {
 		inline void truncate(float len);
 		inline float distance(const Vector3& v) const;
 		inline float distance2(const Vector3& v) const;
+		inline float cross2d(const Vector3& v) const;
 };
 
 inline std::ostream& operator<<(std::ostream& out, const Vector3& vec)
@@ -153,6 +154,11 @@ inline float Vector3::distance(const Vector3& v) const
 inline float Vector3::distance2(const Vector3& v) const
 {
 	return (*this - v).length2();
+}
+
+inline float Vector3::cross2d(const Vector3& v) const
+{
+	return x * v.y - y * v.x;
 }
 
 }

@@ -34,10 +34,17 @@ class Math {
 		static double pointToLineDistance(const Vector3& l1,
 				const Vector3& l2,
 				const Vector3& p);
+		static double pointToSegmentDistance(const Vector3& l1,
+				const Vector3& l2,
+				const Vector3& p, Vector3* nearest = nullptr);
 		static Vector3 lineLineIntersection2D(const Vector3& p1,
 				const Vector3& p2,
 				const Vector3& p3,
 				const Vector3& p4);
+		static Vector3 segmentSegmentIntersection2D(const Vector3& p1,
+				const Vector3& p2,
+				const Vector3& p3,
+				const Vector3& p4, bool* found);
 };
 
 }

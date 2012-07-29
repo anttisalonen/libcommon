@@ -5,6 +5,19 @@
 
 namespace Common {
 
+class Wall {
+	public:
+		Wall(const Vector3& start, const Vector3& end)
+			: mStart(start), mEnd(end) { }
+		virtual ~Wall() { }
+		const Vector3& getStart() const { return mStart; }
+		const Vector3& getEnd() const { return mEnd; }
+
+	protected:
+		Vector3 mStart;
+		Vector3 mEnd;
+};
+
 class Obstacle : public Entity {
 	public:
 		inline Obstacle(float radius) : mRadius(radius) { }

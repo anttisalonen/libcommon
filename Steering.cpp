@@ -100,7 +100,7 @@ Vector3 Steering::obstacleAvoidance(const std::vector<Obstacle*> obstacles)
 
 		float rad = mUnit.getRadius() + o->getRadius();
 
-		float dist = Math::pointToLineDistance(mUnit.getPosition(),
+		float dist = Math::pointToSegmentDistance(mUnit.getPosition(),
 				mUnit.getPosition() + mUnit.getVelocity() * 0.5f,
 				o->getPosition()) - rad;
 		if(dist < distToNearest) {
@@ -145,6 +145,44 @@ bool Steering::accumulate(Vector3& runningTotal, const Vector3& add)
 		runningTotal += add.normalized() * remaining;
 		return false;
 	}
+}
+
+Vector3 Steering::wallAvoidance(const std::vector<Wall*> walls)
+{
+	Vector3 nearestPointOnWall;
+	float distToNearest = FLT_MAX;
+
+	if(mUnit.getVelocity().null())
+		return Vector3();
+
+	for(auto w : walls) {
+		bool found = false;
+		Math::segmentSegmentIntersection2D(mUnit.getPosition(),
+				mUnit.getPosition() + mUnit.getVelocity() * 0.5f,
+				w->getStart(), w->getEnd(), &found);
+		if(found) {
+			Vector3 nearest;
+			float dist = Math::pointToSegmentDistance(w->getStart(),
+					w->getEnd(),
+					mUnit.getPosition(), &nearest);
+			if(dist < distToNearest) {
+				distToNearest = dist;
+				nearestPointOnWall = nearest;
+			}
+		}
+	}
+
+	if(distToNearest == FLT_MAX) {
+		return Vector3();
+	}
+
+	Vector3 vecFromPoint = mUnit.getPosition() - nearestPointOnWall;
+	float velmultiplier = 5.0f + mUnit.getVelocity().length() * 1.0f;
+	float multiplier = velmultiplier / distToNearest;
+
+	Vector3 res = vecFromPoint.normalized() * multiplier;
+
+	return res;
 }
 
 }
