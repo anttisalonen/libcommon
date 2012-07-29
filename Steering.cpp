@@ -177,7 +177,7 @@ Vector3 Steering::wallAvoidance(const std::vector<Wall*> walls)
 	}
 
 	Vector3 vecFromPoint = mUnit.getPosition() - nearestPointOnWall;
-	float velmultiplier = 5.0f + mUnit.getVelocity().length() * 1.0f;
+	float velmultiplier = 500.0f + mUnit.getVelocity().length() * 1.0f;
 	float multiplier = velmultiplier / distToNearest;
 
 	Vector3 res = vecFromPoint.normalized() * multiplier;
