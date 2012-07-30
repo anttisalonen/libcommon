@@ -32,8 +32,20 @@ void Texture::setupSDLSurface(const SDL_Surface* surf, unsigned int startrow, un
 	glBindTexture(GL_TEXTURE_2D, mTexture);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	GLenum format;
+	if(hasAlpha) {
+		if (surf->format->Rmask == 0x000000ff)
+			format = GL_RGBA;
+		else
+			format = GL_BGRA;
+	} else {
+		if (surf->format->Rmask == 0x000000ff)
+			format = GL_RGB;
+		else
+			format = GL_BGR;
+	}
 	glTexImage2D(GL_TEXTURE_2D, 0, surf->format->BytesPerPixel, surf->w, height ? height : surf->h,
-			0, hasAlpha ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE,
+			0, format, GL_UNSIGNED_BYTE,
 			(char*)surf->pixels + startrow * surf->w * surf->format->BytesPerPixel);
 	mWidth = surf->w;
 	mHeight = surf->h;
