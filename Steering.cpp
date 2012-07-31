@@ -92,9 +92,10 @@ Vector3 Steering::obstacleAvoidance(const std::vector<Obstacle*> obstacles)
 	if(mUnit.getVelocity().null())
 		return Vector3();
 
+	float minObstacleDistance = mUnit.getVelocity().length() * 0.5f;
 	for(auto o : obstacles) {
-		float dot = mUnit.getPosition().dot(o->getPosition());
-		if(dot < 0.0f) {
+		float heading = mUnit.getVelocity().dot(o->getPosition() - mUnit.getPosition());
+		if(heading < 0.0f) {
 			continue;
 		}
 
@@ -103,7 +104,7 @@ Vector3 Steering::obstacleAvoidance(const std::vector<Obstacle*> obstacles)
 		float dist = Math::pointToSegmentDistance(mUnit.getPosition(),
 				mUnit.getPosition() + mUnit.getVelocity() * 0.5f,
 				o->getPosition()) - rad;
-		if(dist < distToNearest) {
+		if(dist < distToNearest && dist < minObstacleDistance) {
 			distToNearest = dist;
 			nearest = o;
 		}
@@ -112,6 +113,7 @@ Vector3 Steering::obstacleAvoidance(const std::vector<Obstacle*> obstacles)
 	if(!nearest) {
 		return Vector3();
 	}
+
 
 	Vector3 vecFromObj = Entity::vectorFromTo(*nearest, mUnit);
 	if(vecFromObj.length() < mUnit.getRadius() + nearest->getRadius()) {
