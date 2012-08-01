@@ -116,5 +116,45 @@ bool Math::segmentCircleIntersect(const Vector3& l1,
 	return f < radius;
 }
 
+bool Math::tps(const Vector3& pos,
+		const Vector3& vel, float c, float& ret1, float& ret2)
+{
+	/* Given an enemy position relative to origo, the enemy velocity and
+	 * the velocity of your projectile,
+	 * returns the two points in time where the projectile shot by you
+	 * will hit the enemy. 0-2 of the points in time may be negative.
+	 * The returning bool says whether the time points were found.
+	 *
+	 * This is what it should look like - from starrover2:
+	   tps x y p q c = ((term1 - term2) / term3, (term1 + term2) / term3)
+		   where term1 = p * x + q * y
+		         term2 = sqrt (c*c*x*x - q*q*x*x + 2 * p * q * x * y + c*c*y*y - p*p*y*y)
+		         term3 = c*c - p*p - q*q
+
+	   I don't know what tps means though. I should've written it down. */
+
+	float x = pos.x;
+	float y = pos.y;
+	float p = vel.x;
+	float q = vel.y;
+	float x2 = x * x;
+	float y2 = y * y;
+	float p2 = p * p;
+	float q2 = q * q;
+	float c2 = c * c;
+
+	float term3 = c2 - p2 - q2;
+
+	if(term3 == 0.0f)
+		return false;
+
+	float term1 = p * x + q * y;
+	float term2 = sqrt (c2 * x2 - q2 * x2 + 2 * p * q * x * y + c2 * y2 - p2 * y2);
+
+	ret1 = (term1 - term2) / term3;
+	ret2 = (term1 + term2) / term3;
+	return true;
+}
+
 }
 

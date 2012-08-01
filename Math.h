@@ -51,6 +51,8 @@ class Math {
 		static bool segmentCircleIntersect(const Vector3& l1,
 				const Vector3& l2,
 				const Vector3& c, float radius);
+		static bool tps(const Vector3& pos,
+				const Vector3& vel, float c, float& ret1, float& ret2);
 };
 
 }
