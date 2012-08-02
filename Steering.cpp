@@ -129,6 +129,46 @@ Vector3 Steering::obstacleAvoidance(const std::vector<Obstacle*> obstacles)
 	return res;
 }
 
+Vector3 Steering::cohesion(const std::vector<Entity*> neighbours)
+{
+	Vector3 centerOfMass;
+
+	int count = 0;
+	for(auto n : neighbours) {
+		if(n == &mUnit)
+			continue;
+
+		centerOfMass += n->getPosition();
+		count++;
+	}
+
+	if(count) {
+		centerOfMass *= (1.0f / count);
+		return seek(centerOfMass);
+	}
+	else {
+		return Vector3();
+	}
+}
+
+Vector3 Steering::separation(const std::vector<Entity*> neighbours)
+{
+	Vector3 res;
+
+	for(auto n : neighbours) {
+		if(n == &mUnit)
+			continue;
+
+		Vector3 toMe = mUnit.getPosition() - n->getPosition();
+		if(toMe.null())
+			continue;
+
+		res += toMe.normalized() / toMe.length();
+	}
+
+	return res;
+}
+
 bool Steering::accumulate(Vector3& runningTotal, const Vector3& add)
 {
 	float magnitude = runningTotal.length();

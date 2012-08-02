@@ -17,6 +17,8 @@ class Steering {
 		Vector3 wander();
 		Vector3 obstacleAvoidance(const std::vector<Obstacle*> obstacles);
 		Vector3 wallAvoidance(const std::vector<Wall*> walls);
+		Vector3 cohesion(const std::vector<Entity*> neighbours);
+		Vector3 separation(const std::vector<Entity*> neighbours);
 		bool accumulate(Vector3& runningTotal, const Vector3& add);
 
 	private:
