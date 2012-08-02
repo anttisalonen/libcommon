@@ -19,6 +19,8 @@ class Vector3 {
 		inline void operator+=(const Vector3& rhs);
 		inline Vector3 operator*(float v) const;
 		inline void operator*=(float v);
+		inline Vector3 operator/(float v) const;
+		inline void operator/=(float v);
 		inline Vector3 normalized() const;
 		inline void normalize();
 		inline float length() const;
@@ -90,6 +92,22 @@ inline void Vector3::operator*=(float v)
 	x *= v;
 	y *= v;
 	z *= v;
+}
+
+inline Vector3 Vector3::operator/(float v) const
+{
+	Vector3 r(*this);
+	r.x /= v;
+	r.y /= v;
+	r.z /= v;
+	return r;
+}
+
+inline void Vector3::operator/=(float v)
+{
+	x /= v;
+	y /= v;
+	z /= v;
 }
 
 Vector3 Vector3::normalized() const
