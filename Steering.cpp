@@ -191,19 +191,19 @@ Vector3 Steering::wallAvoidance(const std::vector<Wall*> walls)
 	Vector3 nearestPointOnWall;
 	float distToNearest = FLT_MAX;
 
-	if(mUnit.getVelocity().null())
-		return Vector3();
-
 	for(auto w : walls) {
 		bool found = false;
 		Math::segmentSegmentIntersection2D(mUnit.getPosition(),
 				mUnit.getPosition() + mUnit.getVelocity() * 0.5f,
 				w->getStart(), w->getEnd(), &found);
-		if(found) {
-			Vector3 nearest;
-			float dist = Math::pointToSegmentDistance(w->getStart(),
-					w->getEnd(),
-					mUnit.getPosition(), &nearest);
+
+		Vector3 nearest;
+
+		float dist = Math::pointToSegmentDistance(w->getStart(),
+				w->getEnd(),
+				mUnit.getPosition(), &nearest);
+
+		if(found || dist < mUnit.getMaxSpeed() * 0.5f) {
 			if(dist < distToNearest) {
 				distToNearest = dist;
 				nearestPointOnWall = nearest;
@@ -216,7 +216,7 @@ Vector3 Steering::wallAvoidance(const std::vector<Wall*> walls)
 	}
 
 	Vector3 vecFromPoint = mUnit.getPosition() - nearestPointOnWall;
-	Vector3 res = vecFromPoint.normalized() * 100.0f;
+	Vector3 res = vecFromPoint.normalized() * 10.0f;
 
 	return res;
 }
