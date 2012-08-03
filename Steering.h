@@ -14,7 +14,7 @@ class Steering {
 		Vector3 arrive(const Vector3& tgtpos);
 		Vector3 pursuit(const Vehicle& tgt);
 		Vector3 evade(const Vehicle& threat);
-		Vector3 wander();
+		Vector3 wander(float radius = 2.0f, float distance = 1.0f, float jitter = 3.0f);
 		Vector3 obstacleAvoidance(const std::vector<Obstacle*> obstacles);
 		Vector3 wallAvoidance(const std::vector<Wall*> walls);
 		Vector3 cohesion(const std::vector<Entity*> neighbours);
@@ -23,9 +23,6 @@ class Steering {
 
 	private:
 		const Vehicle& mUnit;
-		float mWanderRadius;
-		float mWanderDistance;
-		float mWanderJitter;
 		Vector3 mWanderTarget;
 };
 

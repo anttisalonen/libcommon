@@ -8,10 +8,7 @@
 namespace Common {
 
 Steering::Steering(const Vehicle& e)
-	: mUnit(e),
-	mWanderRadius(2.0f),
-	mWanderDistance(3.0f),
-	mWanderJitter(1.0f)
+	: mUnit(e)
 {
 }
 
@@ -68,17 +65,17 @@ Vector3 Steering::evade(const Vehicle& threat)
 	return flee(threat.getPosition() + threat.getVelocity() * lookAheadTime);
 }
 
-Vector3 Steering::wander()
+Vector3 Steering::wander(float radius, float distance, float jitter)
 {
-	mWanderTarget += Vector3(Random::clamped() * mWanderJitter,
-			Random::clamped() * mWanderJitter,
+	mWanderTarget += Vector3(Random::clamped() * jitter,
+			Random::clamped() * jitter,
 			0.0f);
 
 	mWanderTarget.normalize();
 
-	mWanderTarget *= mWanderRadius;
+	mWanderTarget *= radius;
 
-	Vector3 target = mUnit.getPosition() + mUnit.getVelocity().normalized() * mWanderDistance + mWanderTarget;
+	Vector3 target = mUnit.getPosition() + mUnit.getVelocity().normalized() * distance + mWanderTarget;
 
 	return target - mUnit.getPosition();
 }
