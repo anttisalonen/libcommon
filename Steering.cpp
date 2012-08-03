@@ -166,6 +166,24 @@ Vector3 Steering::separation(const std::vector<Entity*> neighbours)
 	return res;
 }
 
+Vector3 Steering::offsetPursuit(const Vehicle& leader, const Vector3& offset)
+{
+	Vector3 rotatedOffset(offset);
+
+	float angle = leader.getXYRotation();
+
+	rotatedOffset.x = offset.x * cos(angle) - offset.y * sin(angle);
+	rotatedOffset.y = offset.x * sin(angle) + offset.y * cos(angle);
+
+	rotatedOffset += leader.getPosition();
+
+	Vector3 toOffset = rotatedOffset - mUnit.getPosition();
+
+	float lookAheadTime = toOffset.length() / (mUnit.getMaxSpeed() + leader.getSpeed());
+
+	return arrive(rotatedOffset + leader.getVelocity() * lookAheadTime);
+}
+
 bool Steering::accumulate(Vector3& runningTotal, const Vector3& add)
 {
 	float magnitude = runningTotal.length();
