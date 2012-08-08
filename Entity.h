@@ -110,8 +110,11 @@ void Entity::setXYRotation(float r)
 void Entity::addXYRotation(float r)
 {
 	mRotation += r;
-	if(mRotation >= PI || mRotation < -PI) {
-		mRotation = std::fmod(mRotation, PI);
+	if(mRotation >= PI) {
+		mRotation = std::fmod(mRotation + PI, TWO_PI) - PI;
+	}
+	else if(mRotation < -PI) {
+		mRotation = std::fmod(mRotation - PI, TWO_PI) + PI;
 	}
 }
 
@@ -159,7 +162,7 @@ void Entity::update(float time)
 	mAcceleration = Vector3();
 
 	mRotationalVelocity += mRotationalAcceleration * time;
-	mRotation += mRotation * time;
+	mRotation += mRotationalVelocity * time;
 	mRotationalAcceleration = 0.0f;
 }
 
