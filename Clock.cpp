@@ -100,6 +100,11 @@ void Countdown::clear()
 	mChecked = true;
 }
 
+float Countdown::getMaxTime() const
+{
+	return mFrom;
+}
+
 SteadyTimer::SteadyTimer(float steptime)
 	: mStepTime(steptime)
 {

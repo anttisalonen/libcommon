@@ -24,6 +24,7 @@ class Countdown {
 		bool running() const;
 		float timeLeft() const;
 		void clear();
+		float getMaxTime() const;
 	private:
 		float mFrom;
 		float mNow;
