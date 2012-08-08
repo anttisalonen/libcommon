@@ -168,12 +168,7 @@ Vector3 Steering::separation(const std::vector<Entity*> neighbours)
 
 Vector3 Steering::offsetPursuit(const Vehicle& leader, const Vector3& offset)
 {
-	Vector3 rotatedOffset(offset);
-
-	float angle = leader.getXYRotation();
-
-	rotatedOffset.x = offset.x * cos(angle) - offset.y * sin(angle);
-	rotatedOffset.y = offset.x * sin(angle) + offset.y * cos(angle);
+	Vector3 rotatedOffset = Math::rotate2D(offset, leader.getXYRotation());
 
 	rotatedOffset += leader.getPosition();
 
