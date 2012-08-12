@@ -184,15 +184,29 @@ void SDL_utils::drawPoint(const Vector3& coords, float size, const Common::Color
 	glEnd();
 }
 
-void SDL_utils::drawRectangle(float x, float y, float x2, float y2)
+void SDL_utils::drawRectangle(float x, float y, float x2, float y2,
+		const Common::Color& c, float alpha, bool onlyframes)
 {
 	glDisable(GL_TEXTURE_2D);
-	glBegin(GL_LINE_LOOP);
-	glColor3f(1.0f, 1.0f, 1.0f);
+	if(onlyframes)
+		glBegin(GL_LINE_LOOP);
+	else
+		glBegin(GL_QUADS);
+	glColor4ub(c.r, c.g, c.b, alpha * 255);
 	glVertex3f(x,  y,  0.0f);
 	glVertex3f(x,  y2, 0.0f);
 	glVertex3f(x2, y2, 0.0f);
 	glVertex3f(x2, y,  0.0f);
+	glEnd();
+}
+
+void SDL_utils::drawLine(const Common::Vector3& p1, const Common::Vector3& p2, const Common::Color& c, float alpha)
+{
+	glDisable(GL_TEXTURE_2D);
+	glBegin(GL_LINES);
+	glColor4ub(c.r, c.g, c.b, alpha * 255);
+	glVertex3f(p1.x, p1.y, p1.z);
+	glVertex3f(p2.x, p2.y, p2.z);
 	glEnd();
 }
 
