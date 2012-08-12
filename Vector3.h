@@ -32,6 +32,8 @@ class Vector3 {
 		inline float distance(const Vector3& v) const;
 		inline float distance2(const Vector3& v) const;
 		inline float cross2d(const Vector3& v) const;
+		inline void negate();
+		inline Vector3 negated() const;
 };
 
 inline std::ostream& operator<<(std::ostream& out, const Vector3& vec)
@@ -177,6 +179,20 @@ inline float Vector3::distance2(const Vector3& v) const
 inline float Vector3::cross2d(const Vector3& v) const
 {
 	return x * v.y - y * v.x;
+}
+
+inline void Vector3::negate()
+{
+	x = -x;
+	y = -y;
+	z = -z;
+}
+
+inline Vector3 Vector3::negated() const
+{
+	Vector3 v(*this);
+	v.negate();
+	return v;
 }
 
 }
