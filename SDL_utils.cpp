@@ -184,5 +184,17 @@ void SDL_utils::drawPoint(const Vector3& coords, float size, const Common::Color
 	glEnd();
 }
 
+void SDL_utils::drawRectangle(float x, float y, float x2, float y2)
+{
+	glDisable(GL_TEXTURE_2D);
+	glBegin(GL_LINE_LOOP);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(x,  y,  0.0f);
+	glVertex3f(x,  y2, 0.0f);
+	glVertex3f(x2, y2, 0.0f);
+	glVertex3f(x2, y,  0.0f);
+	glEnd();
+}
+
 }
 

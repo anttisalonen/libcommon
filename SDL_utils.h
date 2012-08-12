@@ -26,6 +26,7 @@ namespace Common {
 					bool screencoordinates, bool centered);
 			static void drawCircle(float x, float y, float rad);
 			static void drawPoint(const Vector3& coords, float size, const Common::Color& col);
+			static void drawRectangle(float x, float y, float x2, float y2);
 	};
 
 }
