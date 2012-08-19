@@ -89,9 +89,9 @@ const char* SDL_utils::GLErrorToString(GLenum err)
 
 void SDL_utils::drawSprite(const Texture& t,
 		const Rectangle& vertcoords,
-		const Rectangle& texcoords, float depth)
+		const Rectangle& texcoords, float depth, float alpha)
 {
-	glColor3f(1.0f, 1.0f, 1.0f);
+	glColor4f(1.0f, 1.0f, 1.0f, alpha);
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, t.getTexture());
 	glBegin(GL_QUADS);

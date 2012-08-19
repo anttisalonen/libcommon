@@ -18,7 +18,8 @@ namespace Common {
 			static const char* GLErrorToString(GLenum err);
 			static void drawSprite(const Common::Texture& t,
 					const Common::Rectangle& vertcoords,
-					const Common::Rectangle& texcoords, float depth);
+					const Common::Rectangle& texcoords, float depth,
+					float alpha = 1.0f);
 			static void drawText(TextMap& tm, TTF_Font* font, const Vector3& camera,
 					float scaleLevel, int screenWidth, int screenHeight,
 					float x, float y,
