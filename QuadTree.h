@@ -67,7 +67,6 @@ QuadTree<T>::QuadTree(const AABB& boundary)
 	mSW(nullptr),
 	mSE(nullptr)
 {
-	std::cout << "New quadtree at " << boundary << "\n";
 }
 
 template<class T>
