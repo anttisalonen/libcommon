@@ -9,11 +9,33 @@ struct Rectangle {
 	inline Rectangle();
 	inline Rectangle(float x_, float y_, float w_, float h_);
 	inline bool pointWithin(float x_, float y_) const;
+	inline bool operator<(const Rectangle& s1) const;
 	float x;
 	float y;
 	float w;
 	float h;
 };
+
+bool Rectangle::operator<(const Rectangle& s1) const
+{
+	if(x < s1.x)
+		return true;
+	if(x > s1.x)
+		return false;
+	if(y < s1.y)
+		return true;
+	if(y > s1.y)
+		return false;
+	if(w < s1.w)
+		return true;
+	if(w > s1.w)
+		return false;
+	if(h < s1.h)
+		return true;
+	if(h > s1.h)
+		return false;
+	return false;
+}
 
 inline std::ostream& operator<<(std::ostream& out, const Rectangle& r)
 {
