@@ -36,6 +36,7 @@ class Entity {
 		inline float getSpeed() const;
 		inline void setAutomaticHeading();
 		inline void setVelocityToHeading();
+		inline void setVelocityToNegativeHeading();
 		inline Vector3 getHeadingVector() const;
 
 	protected:
@@ -183,6 +184,12 @@ inline void Entity::setVelocityToHeading()
 {
 	float s = getSpeed();
 	mVelocity = getHeadingVector() * s;
+}
+
+inline void Entity::setVelocityToNegativeHeading()
+{
+	float s = getSpeed();
+	mVelocity = getHeadingVector() * -s;
 }
 
 inline Vector3 Entity::getHeadingVector() const
