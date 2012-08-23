@@ -166,5 +166,15 @@ Vector3 Math::rotate2D(const Vector3& v, float angle)
 	return rot;
 }
 
+double Math::degreesToRadians(double d)
+{
+	return d * PI / 180.0f;
+}
+
+double Math::radiansToDegrees(double r)
+{
+	return r * 180.0f / PI;
+}
+
 }
 
