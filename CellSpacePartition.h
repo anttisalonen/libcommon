@@ -3,6 +3,7 @@
 
 #include <list>
 #include <vector>
+#include <cmath>
 
 #include "Math.h"
 
@@ -56,8 +57,8 @@ CellSpacePartition<T>::CellSpacePartition(float w, float h, unsigned int cellsx,
 	mMaxEntities(maxentities),
 	mQueryResultNum(0)
 {
-	mCellWidth  = mWidth  / mNumCellsX;
-	mCellHeight = mHeight / mNumCellsY;
+	mCellWidth  = ceil(mWidth  / (float)mNumCellsX);
+	mCellHeight = ceil(mHeight / (float)mNumCellsY);
 	for(int j = 0; j < mNumCellsY; j++) {
 		for(int i = 0; i < mNumCellsX; i++) {
 			mCells.push_back(Cell<T>(AABB(Point((i + 0.5f) * mCellWidth - mWidth * 0.5f,
