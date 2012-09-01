@@ -2,6 +2,7 @@
 #define COMMON_SDL_UTILS_H
 
 #include <SDL.h>
+#include <SDL_ttf.h>
 
 #include "Vector3.h"
 #include "Texture.h"
