@@ -4,6 +4,8 @@
 #include <iostream>
 #include <math.h>
 
+#include <boost/serialization/access.hpp>
+
 namespace Common {
 
 class Vector3 {
@@ -35,6 +37,16 @@ class Vector3 {
         inline Vector3 cross(const Vector3& v) const;
 		inline void negate();
 		inline Vector3 negated() const;
+
+	private:
+		friend class boost::serialization::access;
+		template<class Archive>
+		void serialize(Archive& ar, const unsigned int version)
+		{
+			ar & x;
+			ar & y;
+			ar & z;
+		}
 };
 
 inline std::ostream& operator<<(std::ostream& out, const Vector3& vec)
