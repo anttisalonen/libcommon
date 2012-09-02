@@ -7,7 +7,7 @@ CXXFLAGS += $(shell sdl-config --cflags)
 
 # Common lib
 
-COMMONSRCS = SDLSurface.cpp Texture.cpp SDL_utils.cpp Color.cpp Math.cpp Clock.cpp Steering.cpp Random.cpp
+COMMONSRCS = SDLSurface.cpp Texture.cpp SDL_utils.cpp Color.cpp Math.cpp Clock.cpp Steering.cpp Random.cpp Matrix44.cpp
 COMMONOBJS = $(COMMONSRCS:.cpp=.o)
 COMMONDEPS = $(COMMONSRCS:.cpp=.dep)
 COMMONLIB = libcommon.a
