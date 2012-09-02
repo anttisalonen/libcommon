@@ -1,6 +1,7 @@
 #include <stdlib.h>
 
 #include "Math.h"
+#include "Quaternion.h"
 
 namespace Common {
 
@@ -164,6 +165,30 @@ Vector3 Math::rotate2D(const Vector3& v, float angle)
 	rot.y = v.x * sin(angle) + v.y * cos(angle);
 
 	return rot;
+}
+
+Vector3 Math::rotate3D(const Vector3& v, float angle, const Vector3& axe)
+{
+	Vector3 ret;
+
+	float sinhalf = sin(angle / 2);
+	float coshalf = cos(angle / 2);
+
+	float rx = axe.x * sinhalf;
+	float ry = axe.y * sinhalf;
+	float rz = axe.z * sinhalf;
+	float rw = coshalf;
+
+	auto rot = Quaternion(rx, ry, rz, rw);
+	auto conq = rot.conjugated();
+	auto w1 = conq * v;
+	auto w  = w1 * rot;
+
+	ret.x = w.x;
+	ret.y = w.y;
+	ret.z = w.z;
+
+	return ret;
 }
 
 double Math::degreesToRadians(double d)

@@ -54,6 +54,7 @@ class Math {
 		static bool tps(const Vector3& pos,
 				const Vector3& vel, float c, float& ret1, float& ret2);
 		static Vector3 rotate2D(const Vector3& v, float angle);
+		static Vector3 rotate3D(const Vector3& v, float angle, const Vector3& axe);
 		static double degreesToRadians(double d);
 		static double radiansToDegrees(double r);
 };
