@@ -27,9 +27,25 @@ Texture::Texture(const SDL_Surface* surf, unsigned int startrow, unsigned int he
 
 void Texture::setupSDLSurface(const SDL_Surface* surf, unsigned int startrow, unsigned int height)
 {
+	mTexture = loadTexture(surf, startrow, height);
+	mWidth = surf->w;
+	mHeight = surf->h;
+}
+
+GLuint Texture::loadTexture(const char* filename,
+		unsigned int startrow, unsigned int height)
+{
+	SDLSurface surf(filename);
+	return loadTexture(surf.getSurface(), startrow, height);
+}
+
+GLuint Texture::loadTexture(const SDL_Surface* surf,
+		unsigned int startrow, unsigned int height)
+{
 	bool hasAlpha = surf->format->BytesPerPixel == 4;
-	glGenTextures(1, &mTexture);
-	glBindTexture(GL_TEXTURE_2D, mTexture);
+	GLuint texture;
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	GLenum format;
@@ -47,8 +63,7 @@ void Texture::setupSDLSurface(const SDL_Surface* surf, unsigned int startrow, un
 	glTexImage2D(GL_TEXTURE_2D, 0, surf->format->BytesPerPixel, surf->w, height ? height : surf->h,
 			0, format, GL_UNSIGNED_BYTE,
 			(char*)surf->pixels + startrow * surf->w * surf->format->BytesPerPixel);
-	mWidth = surf->w;
-	mHeight = surf->h;
+	return texture;
 }
 
 Texture::~Texture()
