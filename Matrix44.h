@@ -11,6 +11,9 @@ class Matrix44 {
 				float a31, float a32, float a33, float a34,
 				float a41, float a42, float a43, float a44);
 
+		Matrix44 operator*(const Matrix44& rhs) const;
+		void operator*=(const Matrix44& rhs);
+
 		static const Matrix44 Identity;
 
 		float m[16];
