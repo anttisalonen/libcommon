@@ -66,6 +66,33 @@ void Matrix44::operator*=(const Matrix44& rhs)
 	*this = res;
 }
 
+Matrix44 Matrix44::transposed() const
+{
+	Matrix44 ret(*this);
+
+	ret.m[1] = m[4];
+	ret.m[2] = m[8];
+	ret.m[3] = m[12];
+
+	ret.m[4] = m[1];
+	ret.m[6] = m[9];
+	ret.m[7] = m[13];
+
+	ret.m[8] = m[2];
+	ret.m[9] = m[6];
+	ret.m[11] = m[14];
+
+	ret.m[12] = m[3];
+	ret.m[13] = m[7];
+	ret.m[14] = m[11];
+
+	return ret;
+}
+
+void Matrix44::transpose()
+{
+	*this = this->transposed();
+}
 
 const Matrix44 Matrix44::Identity = Matrix44(1, 0, 0, 0,
 		0, 1, 0, 0,

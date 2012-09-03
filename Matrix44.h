@@ -14,6 +14,9 @@ class Matrix44 {
 		Matrix44 operator*(const Matrix44& rhs) const;
 		void operator*=(const Matrix44& rhs);
 
+		Matrix44 transposed() const;
+		void transpose();
+
 		static const Matrix44 Identity;
 
 		float m[16];
