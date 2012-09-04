@@ -7,6 +7,10 @@ namespace Common {
 Matrix44::Matrix44()
 {
 	memset(m, 0, sizeof(m));
+	m[0] = 1.0f;
+	m[5] = 1.0f;
+	m[10] = 1.0f;
+	m[15] = 1.0f;
 }
 
 
