@@ -126,22 +126,22 @@ bool Driver::handleInput(float frameTime)
 	while(SDL_PollEvent(&event)) {
 		switch(event.type) {
 			case SDL_KEYDOWN:
-				if(handleKeyDown(event.key.keysym.sym))
+				if(handleKeyDown(frameTime, event.key.keysym.sym))
 					quitting = true;
 				break;
 
 			case SDL_KEYUP:
-				if(handleKeyUp(event.key.keysym.sym))
+				if(handleKeyUp(frameTime, event.key.keysym.sym))
 					quitting = true;
 				break;
 
 			case SDL_MOUSEBUTTONDOWN:
-				if(handleMousePress(event.button.button))
+				if(handleMousePress(frameTime, event.button.button))
 					quitting = true;
 				break;
 
 			case SDL_MOUSEBUTTONUP:
-				if(handleMouseRelease(event.button.button))
+				if(handleMouseRelease(frameTime, event.button.button))
 					quitting = true;
 				break;
 
@@ -157,7 +157,7 @@ bool Driver::handleInput(float frameTime)
 	return quitting;
 }
 
-bool Driver::handleKeyDown(SDLKey key)
+bool Driver::handleKeyDown(float frameTime, SDLKey key)
 {
 	if(key == SDLK_ESCAPE)
 		return true;
@@ -169,22 +169,22 @@ bool Driver::handleKeyDown(SDLKey key)
 	return false;
 }
 
-bool Driver::handleKeyUp(SDLKey key)
+bool Driver::handleKeyUp(float frameTime, SDLKey key)
 {
 	return false;
 }
 
-bool Driver::handleMouseMotion(const SDL_MouseMotionEvent& ev)
+bool Driver::handleMouseMotion(float frameTime, const SDL_MouseMotionEvent& ev)
 {
 	return false;
 }
 
-bool Driver::handleMousePress(Uint8 button)
+bool Driver::handleMousePress(float frameTime, Uint8 button)
 {
 	return false;
 }
 
-bool Driver::handleMouseRelease(Uint8 button)
+bool Driver::handleMouseRelease(float frameTime, Uint8 button)
 {
 	return false;
 }

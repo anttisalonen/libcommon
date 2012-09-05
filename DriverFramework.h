@@ -23,11 +23,11 @@ class Driver {
 		virtual void drawFrame();
 		virtual void finishFrame();
 		virtual bool handleInput(float frameTime);
-		virtual bool handleKeyDown(SDLKey key);
-		virtual bool handleKeyUp(SDLKey key);
-		virtual bool handleMouseMotion(const SDL_MouseMotionEvent& ev);
-		virtual bool handleMousePress(Uint8 button);
-		virtual bool handleMouseRelease(Uint8 button);
+		virtual bool handleKeyDown(float frameTime, SDLKey key);
+		virtual bool handleKeyUp(float frameTime, SDLKey key);
+		virtual bool handleMouseMotion(float frameTime, const SDL_MouseMotionEvent& ev);
+		virtual bool handleMousePress(float frameTime, Uint8 button);
+		virtual bool handleMouseRelease(float frameTime, Uint8 button);
 		virtual bool handleQuit();
 
 	private:
