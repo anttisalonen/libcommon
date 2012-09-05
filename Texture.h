@@ -15,7 +15,11 @@ class Texture {
 				unsigned int height = 0);
 		Texture(const char* filename, unsigned int startrow = 0,
 				unsigned int height = 0);
+
 		~Texture();
+		Texture& operator=(const Texture&) = delete;
+		Texture(const Texture&) = delete;
+
 		GLuint getTexture() const;
 		int getWidth() const;
 		int getHeight() const;
