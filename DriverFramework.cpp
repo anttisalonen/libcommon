@@ -145,6 +145,11 @@ bool Driver::handleInput(float frameTime)
 					quitting = true;
 				break;
 
+			case SDL_MOUSEMOTION:
+				if(handleMouseMotion(frameTime, event.motion))
+					quitting = true;
+				break;
+
 			case SDL_QUIT:
 				if(handleQuit())
 					quitting = true;
