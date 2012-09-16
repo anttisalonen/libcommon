@@ -1,6 +1,7 @@
 #include "Random.h"
 
 #include <stdlib.h>
+#include <cassert>
 
 namespace Common {
 
@@ -18,5 +19,12 @@ float Random::uniform()
 	return r;
 }
 
+unsigned int Random::uniform(unsigned int i, unsigned int j)
+{
+	assert(j > i);
+	unsigned int range = j - i;
+	unsigned int x = rand() % range;
+	return i + x;
+}
 
 }
