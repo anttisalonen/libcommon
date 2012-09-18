@@ -73,6 +73,16 @@ void Driver::run()
 	return;
 }
 
+unsigned int Driver::getScreenWidth() const
+{
+	return mScreenWidth;
+}
+
+unsigned int Driver::getScreenHeight() const
+{
+	return mScreenHeight;
+}
+
 void Driver::render()
 {
 	beginFrame();

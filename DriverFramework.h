@@ -11,6 +11,8 @@ class Driver {
 		virtual ~Driver();
 		void setFixedTime(float ticksPerSec, bool randomised);
 		void run();
+		unsigned int getScreenWidth() const;
+		unsigned int getScreenHeight() const;
 
 	protected:
 		virtual void render();
