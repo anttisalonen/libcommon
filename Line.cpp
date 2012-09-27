@@ -8,6 +8,7 @@ namespace Common {
 std::list<Point2> Line::line(const Point2& from, const Point2& to)
 {
 	std::list<Point2> ret;
+	bool rev = false;
 	int x0 = from.x;
 	int y0 = from.y;
 	int x1 = to.x;
@@ -21,6 +22,7 @@ std::list<Point2> Line::line(const Point2& from, const Point2& to)
 	if(x0 > x1) {
 		std::swap(x0, x1);
 		std::swap(y0, y1);
+		rev = true;
 	}
 	int d_x = x1 - x0;
 	int d_y = abs(y1 - y0);
@@ -32,10 +34,17 @@ std::list<Point2> Line::line(const Point2& from, const Point2& to)
 	else
 		ystep = -1;
 	for(int x = x0; x <= x1; x++) {
-		if(steep)
-			ret.push_back(Point2(y, x));
-		else
-			ret.push_back(Point2(x, y));
+		if(steep) {
+			if(rev)
+				ret.push_front(Point2(y, x));
+			else
+				ret.push_back(Point2(y, x));
+		} else {
+			if(rev)
+				ret.push_front(Point2(x, y));
+			else
+				ret.push_back(Point2(x, y));
+		}
 		error -= d_y;
 		if(error < 0) {
 			y += ystep;
