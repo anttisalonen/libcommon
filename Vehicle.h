@@ -29,7 +29,7 @@ class Obstacle : public Entity {
 
 class Vehicle : public Obstacle {
 	public:
-		inline Vehicle(float radius, float maxspeed, float maxacc);
+		inline Vehicle(float radius, float maxspeed, float maxacc, bool ignoreZ = true);
 		float getMaxSpeed() const { return mMaxSpeed; }
 		float getMaxAcceleration() const { return mMaxAcceleration; }
 		virtual inline void update(float time) override;
@@ -37,12 +37,14 @@ class Vehicle : public Obstacle {
 	protected:
 		float mMaxSpeed;
 		float mMaxAcceleration;
+		bool mIgnoreZ;
 };
 
-Vehicle::Vehicle(float radius, float maxspeed, float maxacc)
+Vehicle::Vehicle(float radius, float maxspeed, float maxacc, bool ignoreZ)
 	: Obstacle(radius),
 	mMaxSpeed(maxspeed),
-	mMaxAcceleration(maxacc)
+	mMaxAcceleration(maxacc),
+	mIgnoreZ(ignoreZ)
 {
 }
 
@@ -51,7 +53,8 @@ void Vehicle::update(float time)
 	mAcceleration.truncate(mMaxAcceleration);
 	Entity::update(time);
 	mVelocity.truncate(mMaxSpeed);
-	mPosition.z = 0.0f;
+	if(mIgnoreZ)
+		mPosition.z = 0.0f;
 }
 
 }
