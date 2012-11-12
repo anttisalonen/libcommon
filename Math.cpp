@@ -149,8 +149,12 @@ bool Math::tps(const Vector3& pos,
 	if(term3 == 0.0f)
 		return false;
 
+	float sq = c2 * x2 - q2 * x2 + 2 * p * q * x * y + c2 * y2 - p2 * y2;
+	if(sq < 0.0f)
+		return false;
+
 	float term1 = p * x + q * y;
-	float term2 = sqrt (c2 * x2 - q2 * x2 + 2 * p * q * x * y + c2 * y2 - p2 * y2);
+	float term2 = sqrt (sq);
 
 	ret1 = (term1 - term2) / term3;
 	ret2 = (term1 + term2) / term3;
