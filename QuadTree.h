@@ -7,6 +7,7 @@
 #include <iostream>
 #include <map>
 #include <stack>
+#include <vector>
 
 #include "Partition.h"
 
