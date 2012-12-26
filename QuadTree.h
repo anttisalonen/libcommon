@@ -27,7 +27,7 @@ class QTIterator {
 	private:
 		std::stack<QuadTree<T>*> mQTs;
 		unsigned int mLocation;
-		typename std::map<T, Point>::iterator mIt;
+		typename std::map<T, Vector2>::iterator mIt;
 };
 
 template<class T>
@@ -35,9 +35,9 @@ class QuadTree {
 	public:
 		inline QuadTree(const AABB& boundary);
 		inline ~QuadTree();
-		inline bool insert(T& t, const Point& p); // invalidates all iterators
-		inline bool deleteT(T& t, const Point& p); // invalidates all iterators
-		inline bool update(T& t, const Point& oldpos, const Point& newpos); // invalidates all iterators - slow
+		inline bool insert(T& t, const Vector2& p); // invalidates all iterators
+		inline bool deleteT(T& t, const Vector2& p); // invalidates all iterators
+		inline bool update(T& t, const Vector2& oldpos, const Vector2& newpos); // invalidates all iterators - slow
 		inline void clear();
 		inline std::vector<T> query(const AABB& area) const;
 		inline unsigned int size() const;
@@ -46,12 +46,12 @@ class QuadTree {
 
 	private:
 		inline void subdivide();
-		inline bool updateClean(T& t, const Point& oldpos, const Point& newpos);
-		inline QuadTree<T>* find(T& t, const Point& pos);
+		inline bool updateClean(T& t, const Vector2& oldpos, const Vector2& newpos);
+		inline QuadTree<T>* find(T& t, const Vector2& pos);
 		static const int NODE_CAPACITY = 4;
 		constexpr static const float MIN_DIMENSION = 8.0f;
 		AABB mBoundary;
-		std::map<T, Point> mPoints;
+		std::map<T, Vector2> mPoints;
 		QuadTree* mNW;
 		QuadTree* mNE;
 		QuadTree* mSW;
@@ -82,7 +82,7 @@ QuadTree<T>::~QuadTree()
 }
 
 template<class T>
-bool QuadTree<T>::insert(T& t, const Point& p)
+bool QuadTree<T>::insert(T& t, const Vector2& p)
 {
 	if(!mBoundary.contains(p)) {
 		return false;
@@ -107,7 +107,7 @@ bool QuadTree<T>::insert(T& t, const Point& p)
 }
 
 template<class T>
-bool QuadTree<T>::deleteT(T& t, const Point& p)
+bool QuadTree<T>::deleteT(T& t, const Vector2& p)
 {
 	if(!mBoundary.contains(p)) {
 		return false;
@@ -132,7 +132,7 @@ bool QuadTree<T>::deleteT(T& t, const Point& p)
 }
 
 template<class T>
-bool QuadTree<T>::update(T& t, const Point& oldpos, const Point& newpos)
+bool QuadTree<T>::update(T& t, const Vector2& oldpos, const Vector2& newpos)
 {
 	bool success = updateClean(t, oldpos, newpos);
 	assert(success);
@@ -216,22 +216,22 @@ void QuadTree<T>::subdivide()
 	assert(!mSE);
 	float mx = mBoundary.halfDimension.x * 0.5f;
 	float my = mBoundary.halfDimension.y * 0.5f;
-	mNW = new QuadTree(AABB(Point(mBoundary.center.x - mx,
+	mNW = new QuadTree(AABB(Vector2(mBoundary.center.x - mx,
 					mBoundary.center.y - my),
-				Point(mx, my)));
-	mNE = new QuadTree(AABB(Point(mBoundary.center.x + mx,
+				Vector2(mx, my)));
+	mNE = new QuadTree(AABB(Vector2(mBoundary.center.x + mx,
 					mBoundary.center.y - my),
-				Point(mx, my)));
-	mSW = new QuadTree(AABB(Point(mBoundary.center.x - mx,
+				Vector2(mx, my)));
+	mSW = new QuadTree(AABB(Vector2(mBoundary.center.x - mx,
 					mBoundary.center.y + my),
-				Point(mx, my)));
-	mSE = new QuadTree(AABB(Point(mBoundary.center.x + mx,
+				Vector2(mx, my)));
+	mSE = new QuadTree(AABB(Vector2(mBoundary.center.x + mx,
 					mBoundary.center.y + my),
-				Point(mx, my)));
+				Vector2(mx, my)));
 }
 
 template<class T>
-bool QuadTree<T>::updateClean(T& t, const Point& oldpos, const Point& newpos)
+bool QuadTree<T>::updateClean(T& t, const Vector2& oldpos, const Vector2& newpos)
 {
 	if(!deleteT(t, oldpos)) {
 		std::cout << "QuadTree: failed to delete from position " << oldpos << "\n";
@@ -249,7 +249,7 @@ bool QuadTree<T>::updateClean(T& t, const Point& oldpos, const Point& newpos)
 }
 
 template<class T>
-QuadTree<T>* QuadTree<T>::find(T& t, const Point& pos)
+QuadTree<T>* QuadTree<T>::find(T& t, const Vector2& pos)
 {
 	if(!mBoundary.contains(pos)) {
 		return nullptr;

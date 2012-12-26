@@ -1,26 +1,15 @@
 #ifndef COMMON_PARTITION_H
 #define COMMON_PARTITION_H
 
+#include "Vector2.h"
+
 namespace Common {
 
-struct Point {
-	float x;
-	float y;
-	Point() : x(0), y(0) { }
-	Point(float x_, float y_) : x(x_), y(y_) { }
-};
-
-inline std::ostream& operator<<(std::ostream& out, const Point& r)
-{
-	out << "(" << r.x << ", " << r.y << ")";
-	return out;
-}
-
 struct AABB {
-	Point center;
-	Point halfDimension;
-	AABB(const Point& c, const Point& hd) : center(c), halfDimension(hd) { }
-	inline bool contains(const Point& p) const;
+	Vector2 center;
+	Vector2 halfDimension;
+	AABB(const Vector2& c, const Vector2& hd) : center(c), halfDimension(hd) { }
+	inline bool contains(const Vector2& p) const;
 	inline bool intersects(const AABB& b) const;
 };
 
@@ -30,7 +19,7 @@ inline std::ostream& operator<<(std::ostream& out, const AABB& r)
 	return out;
 }
 
-bool AABB::contains(const Point& p) const
+bool AABB::contains(const Vector2& p) const
 {
 	float dx = fabs(p.x - center.x);
 	float dy = fabs(p.y - center.y);
