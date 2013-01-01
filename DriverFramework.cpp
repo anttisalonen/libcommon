@@ -12,7 +12,6 @@ Driver::Driver(unsigned int screenWidth, unsigned int screenHeight, const char* 
 	: mScreenWidth(screenWidth),
 	mScreenHeight(screenHeight),
 	mScreen(nullptr),
-	mQuitting(false),
 	mPaused(false),
 	mDisableGUI(false),
 	mFixedFrameTime(0.0f),

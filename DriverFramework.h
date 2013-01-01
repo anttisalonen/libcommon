@@ -36,7 +36,6 @@ class Driver {
 		unsigned int mScreenWidth;
 		unsigned int mScreenHeight;
 		SDL_Surface* mScreen;
-		bool mQuitting;
 		bool mPaused;
 		bool mDisableGUI;
 		float mFixedFrameTime;
