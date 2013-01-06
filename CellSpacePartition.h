@@ -28,9 +28,9 @@ class CellSpacePartition {
 		inline void add(T& t, const Vector2& p);
 		inline void remove(T& t, const Vector2& p);
 		inline void update(T& t, const Vector2& oldpos, const Vector2& newpos);
-		inline T& queryBegin(const Vector2& p, float radius);
+		inline T& queryBegin(const Vector2& p, float radius) const;
 		inline bool queryEnd() const;
-		inline T& queryNext();
+		inline T& queryNext() const;
 
 	private:
 		inline unsigned int positionToIndex(const Vector2& p) const;
@@ -46,9 +46,9 @@ class CellSpacePartition {
 		float mCellWidth;
 		float mCellHeight;
 
-		typename std::vector<T> mQueryResult;
-		unsigned int mQueryIndex;
-		unsigned int mQueryResultNum;
+		mutable typename std::vector<T> mQueryResult;
+		mutable unsigned int mQueryIndex;
+		mutable unsigned int mQueryResultNum;
 };
 
 template<class T>
@@ -104,7 +104,7 @@ void CellSpacePartition<T>::update(T& t, const Vector2& oldpos, const Vector2& n
 }
 
 template<class T>
-T& CellSpacePartition<T>::queryBegin(const Vector2& p, float radius)
+T& CellSpacePartition<T>::queryBegin(const Vector2& p, float radius) const
 {
 	AABB query(p, Vector2(radius, radius));
 
@@ -139,7 +139,7 @@ bool CellSpacePartition<T>::queryEnd() const
 }
 
 template<class T>
-T& CellSpacePartition<T>::queryNext()
+T& CellSpacePartition<T>::queryNext() const
 {
 	return mQueryResult.at(++mQueryIndex);
 }
