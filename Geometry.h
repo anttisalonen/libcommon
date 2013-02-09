@@ -16,6 +16,7 @@ struct IPoint {
 	inline bool operator==(const IPoint& rhs) const;
 	inline bool operator!=(const IPoint& rhs) const;
 	inline bool operator<(const IPoint& f) const;
+	inline bool null() const;
 };
 
 bool IPoint::operator==(const IPoint& rhs) const
@@ -33,6 +34,11 @@ bool IPoint::operator<(const IPoint& f) const
 	if(x != f.x)
 		return x < f.x;
 	return y < f.y;
+}
+
+inline bool IPoint::null() const
+{
+	return x == 0 && y == 0;
 }
 
 inline std::ostream& operator<<(std::ostream& out, const IPoint& p)
@@ -63,9 +69,11 @@ class Polygon {
 		inline bool isConvex() const; // may trigger convex hull calculation
 		bool pointInPolygon(const IPoint& p) const;
 		bool isSimple() const; // O(n^2) for now
+		const IPoint& getCentroid() const;
+		float getSignedArea() const;
 
 	private:
-		inline void invalidateConvexHull() const;
+		inline void invalidateCaches() const;
 		inline bool hasConvexHullCached() const;
 		Polygon& operator=(const Polygon& o);
 
@@ -73,12 +81,15 @@ class Polygon {
 		mutable Polygon* mConvexHull;
 		mutable bool mIsConvex;
 		mutable Tristate mIsSimple;
+		mutable IPoint mCentroid;
+		mutable float mSignedArea;
 };
 
 Polygon::Polygon(bool guaranteedConvex)
 	: mConvexHull(nullptr),
 	mIsConvex(guaranteedConvex),
-	mIsSimple(Tristate::Unknown)
+	mIsSimple(Tristate::Unknown),
+	mSignedArea(0.0f)
 {
 }
 
@@ -96,25 +107,25 @@ Polygon::~Polygon()
 
 void Polygon::addPoint(const IPoint& p)
 {
-	invalidateConvexHull();
+	invalidateCaches();
 	mPoints.push_back(p);
 }
 
 void Polygon::removePoint(const IPoint& p)
 {
-	invalidateConvexHull();
+	invalidateCaches();
 	mPoints.erase(std::remove(mPoints.begin(), mPoints.end(), p), mPoints.end());
 }
 
 inline void Polygon::clear()
 {
-	invalidateConvexHull();
+	invalidateCaches();
 	mPoints.clear();
 }
 
 inline void Polygon::setPoints(const std::vector<IPoint>& p)
 {
-	invalidateConvexHull();
+	invalidateCaches();
 	mPoints = p;
 }
 
@@ -138,10 +149,14 @@ inline bool Polygon::isConvex() const
 	return mIsConvex || getConvexHull().getNumPoints() == getNumPoints();
 }
 
-inline void Polygon::invalidateConvexHull() const
+inline void Polygon::invalidateCaches() const
 {
 	mIsConvex = false;
 	delete mConvexHull;
+	mConvexHull = 0;
+	mIsSimple = Tristate::Unknown;
+	mCentroid = IPoint();
+	mSignedArea = 0.0f;
 }
 
 inline bool Polygon::hasConvexHullCached() const

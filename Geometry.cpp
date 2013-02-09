@@ -156,4 +156,40 @@ bool Polygon::isSimple() const
 	return s;
 }
 
+const IPoint& Polygon::getCentroid() const
+{
+	// Not cached when the centroid is at (0,0). Oh well.
+	if(!mCentroid.null()) {
+		return mCentroid;
+	} else {
+		float a = getSignedArea();
+		if(a) {
+			int i, j;
+			for (i = 0, j = mPoints.size() - 1; i < mPoints.size(); j = i++) {
+				mCentroid.x += (mPoints[i].x + mPoints[j].x) *
+					(mPoints[i].x * mPoints[j].y - mPoints[j].x * mPoints[i].y);
+				mCentroid.y += (mPoints[i].y + mPoints[j].y) *
+					(mPoints[i].x * mPoints[j].y - mPoints[j].x * mPoints[i].y);
+			}
+			mCentroid.x /= (6.0f * a);
+			mCentroid.y /= (6.0f * a);
+		}
+		return mCentroid;
+	}
+}
+
+float Polygon::getSignedArea() const
+{
+	if(mSignedArea) {
+		return mSignedArea;
+	} else {
+		int i, j;
+		for (i = 0, j = mPoints.size() - 1; i < mPoints.size(); j = i++) {
+			mSignedArea += mPoints[i].x * mPoints[j].y - mPoints[j].x * mPoints[i].y;
+		}
+		mSignedArea *= 0.5f;
+		return mSignedArea;
+	}
+}
+
 
