@@ -10,8 +10,11 @@ namespace Common {
 typedef long long long64;
 
 struct IPoint {
-	long64 x = 0;
-	long64 y = 0;
+	IPoint() : x(0), y(0) { }
+	IPoint(long64 x_, long64 y_)
+		: x(x_), y(y_) { }
+	long64 x;
+	long64 y;
 
 	inline bool operator==(const IPoint& rhs) const;
 	inline bool operator!=(const IPoint& rhs) const;
@@ -86,17 +89,16 @@ class Polygon {
 };
 
 Polygon::Polygon(bool guaranteedConvex)
-	: mConvexHull(nullptr),
-	mIsConvex(guaranteedConvex),
-	mIsSimple(Tristate::Unknown),
-	mSignedArea(0.0f)
+	: Polygon(std::vector<IPoint>(), guaranteedConvex)
 {
 }
 
 Polygon::Polygon(const std::vector<IPoint>& points, bool guaranteedConvex)
 	: mPoints(points),
 	mConvexHull(nullptr),
-	mIsConvex(guaranteedConvex)
+	mIsConvex(guaranteedConvex),
+	mIsSimple(Tristate::Unknown),
+	mSignedArea(0.0f)
 {
 }
 
