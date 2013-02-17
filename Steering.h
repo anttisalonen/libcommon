@@ -1,5 +1,5 @@
 #ifndef COMMON_STEERING_H
-#define COMMON_STEERING_h
+#define COMMON_STEERING_H
 
 #include "Vector3.h"
 #include "Vehicle.h"
