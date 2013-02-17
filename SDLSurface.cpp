@@ -69,7 +69,7 @@ void SDLSurface::changePixelColors(const std::map<Color, Color>& mapping)
 }
 
 // http://www.libsdl.org/cgi/docwiki.cgi/Pixel_Access
-static inline Uint32 getpixel(SDL_Surface *surface, int x, int y)
+static inline Uint32 getpixel(const SDL_Surface *surface, int x, int y)
 {
 	int bpp = surface->format->BytesPerPixel;
 	/* Here p is the address to the pixel we want to retrieve */
@@ -146,6 +146,50 @@ void SDLSurface::mapPixelColor(std::function<Color (const Color&)> mapping)
 			Color c2 = mapping(c);
 			v = SDL_MapRGBA(mSurface->format, c2.r, c2.g, c2.b, a);
 			putpixel(mSurface, j, i, v);
+		}
+	}
+}
+
+void SDLSurface::blitOnTop(const SDLSurface& oth)
+{
+	auto surf = oth.getSurface();
+	int w = std::min(mSurface->w, surf->w);
+	int h = std::min(mSurface->h, surf->h);
+	for(int i = 0; i < h; i++) {
+		for(int j = 0; j < w; j++) {
+			Uint32 va = getpixel(mSurface, j, i);
+			Uint8 ra, ga, ba, aa;
+			SDL_GetRGBA(va, mSurface->format, &ra, &ga, &ba, &aa);
+
+			Uint32 vb = getpixel(surf, j, i);
+			Uint8 rb, gb, bb, ab;
+			SDL_GetRGBA(vb, surf->format, &rb, &gb, &bb, &ab);
+
+			// convert input to float
+			float fra = ra / 255.0;
+			float frb = rb / 255.0;
+			float fga = ga / 255.0;
+			float fgb = gb / 255.0;
+			float fba = ba / 255.0;
+			float fbb = bb / 255.0;
+			float faa = aa / 255.0;
+			float fab = ab / 255.0;
+
+			// "over" operator
+			float frr = fra * faa + frb * fab * (1.0 - faa);
+			float fgr = fga * faa + fgb * fab * (1.0 - faa);
+			float fbr = fba * faa + fbb * fab * (1.0 - faa);
+			float far = faa + fab * (1.0 - faa);
+
+			// convert result to Uint8
+			Uint8 rr, gr, br, ar;
+			rr = (Uint8)(frr * 255.0);
+			gr = (Uint8)(fgr * 255.0);
+			br = (Uint8)(fbr * 255.0);
+			ar = (Uint8)(far * 255.0);
+
+			Uint32 vr = SDL_MapRGBA(mSurface->format, rr, gr, br, ar);
+			putpixel(mSurface, j, i, vr);
 		}
 	}
 }

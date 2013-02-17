@@ -22,6 +22,8 @@ class SDLSurface {
 				const Color& to);
 		void changePixelColors(const std::map<Color, Color>& mapping);
 		void mapPixelColor(std::function<Color (const Color&)> mapping);
+		void blitOnTop(const SDLSurface& oth);
+
 	private:
 		SDL_Surface* mSurface;
 };
