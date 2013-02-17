@@ -87,11 +87,12 @@ const char* SDL_utils::GLErrorToString(GLenum err)
 	return "unknown error";
 }
 
-void SDL_utils::drawSprite(const Texture& t,
-		const Rectangle& vertcoords,
-		const Rectangle& texcoords, float depth, float alpha)
+void SDL_utils::drawSpriteWithColor(const Common::Texture& t,
+		const Common::Rectangle& vertcoords,
+		const Common::Rectangle& texcoords, float depth,
+		const Common::Color& color, float alpha)
 {
-	glColor4f(1.0f, 1.0f, 1.0f, alpha);
+	glColor4ub(color.r, color.g, color.b, alpha * 255);
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, t.getTexture());
 	glBegin(GL_QUADS);
@@ -104,6 +105,13 @@ void SDL_utils::drawSprite(const Texture& t,
 	glTexCoord2f(texcoords.x, texcoords.y + texcoords.h);
 	glVertex3f(vertcoords.x, vertcoords.y + vertcoords.h, depth);
 	glEnd();
+}
+
+void SDL_utils::drawSprite(const Texture& t,
+		const Rectangle& vertcoords,
+		const Rectangle& texcoords, float depth, float alpha)
+{
+	drawSpriteWithColor(t, vertcoords, texcoords, depth, Common::Color::White, alpha);
 }
 
 void SDL_utils::drawText(TextMap& tm, TTF_Font* font, const Vector3& camera,

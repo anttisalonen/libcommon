@@ -17,6 +17,10 @@ namespace Common {
 			static SDL_Surface* initSDL(int w, int h, const char* caption);
 			static void setupOrthoScreen(int w, int h);
 			static const char* GLErrorToString(GLenum err);
+			static void drawSpriteWithColor(const Common::Texture& t,
+					const Common::Rectangle& vertcoords,
+					const Common::Rectangle& texcoords, float depth,
+					const Common::Color& color, float alpha = 1.0f);
 			static void drawSprite(const Common::Texture& t,
 					const Common::Rectangle& vertcoords,
 					const Common::Rectangle& texcoords, float depth,
