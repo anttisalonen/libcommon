@@ -17,7 +17,7 @@ Clock::Clock()
 	mStatTime = mLastTime;
 }
 
-double Clock::limitFPS(int fps)
+double Clock::limitFPS(int fps, bool output)
 {
 	double newtime = getTime();
 	double maxadv = 1.0f / fps;
@@ -30,7 +30,7 @@ double Clock::limitFPS(int fps)
 		mLastTime = newtime;
 	}
 	mFrames++;
-	if(newtime - mStatTime >= 2.0f) {
+	if(output && newtime - mStatTime >= 2.0f) {
 		std::cout << "FPS: " << mFrames / (newtime - mStatTime) << "\n";
 		mStatTime = newtime;
 		mFrames = 0;

@@ -6,7 +6,7 @@ namespace Common {
 class Clock {
 	public:
 		Clock();
-		double limitFPS(int fps);
+		double limitFPS(int fps, bool output = true);
 		static double getTime();
 	private:
 		double mLastTime;
