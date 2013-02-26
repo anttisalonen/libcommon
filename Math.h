@@ -4,6 +4,7 @@
 #include <algorithm>
 
 #include "Vector3.h"
+#include "Quaternion.h"
 
 #define PI 3.1415926535
 #define TWO_PI 6.283185306
@@ -55,6 +56,7 @@ class Math {
 				const Vector3& vel, float c, float& ret1, float& ret2);
 		static Vector3 rotate2D(const Vector3& v, float angle);
 		static Vector3 rotate3D(const Vector3& v, float angle, const Vector3& axe);
+		static Vector3 rotate3D(const Vector3& v, const Common::Quaternion& q);
 		static double degreesToRadians(double d);
 		static double radiansToDegrees(double r);
 };

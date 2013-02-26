@@ -173,26 +173,23 @@ Vector3 Math::rotate2D(const Vector3& v, float angle)
 
 Vector3 Math::rotate3D(const Vector3& v, float angle, const Vector3& axe)
 {
-	Vector3 ret;
+	Quaternion q(Quaternion::fromAxisAngle(axe, angle));
+	return rotate3D(v, q);
+}
 
-	float sinhalf = sin(angle / 2);
-	float coshalf = cos(angle / 2);
+Vector3 Math::rotate3D(const Vector3& v, const Common::Quaternion& q)
+{
+	// x' = q * x * q'
+	// where q = rotation quaternion
+	//       q' = inverse q
+	//       x = vector treated as a quaternion
+	// inverse q is equivalent to conjugate of q for an unknown reason
+	// (proof left as an exercise to the reader)
+	auto n = v.normalized();
+	auto nq = Quaternion(n.x, n.y, n.z, 0.0f);
+	auto w  = q * nq * q.conjugated();
 
-	float rx = axe.x * sinhalf;
-	float ry = axe.y * sinhalf;
-	float rz = axe.z * sinhalf;
-	float rw = coshalf;
-
-	auto rot = Quaternion(rx, ry, rz, rw);
-	auto conq = rot.conjugated();
-	auto w1 = conq * v;
-	auto w  = w1 * rot;
-
-	ret.x = w.x;
-	ret.y = w.y;
-	ret.z = w.z;
-
-	return ret;
+	return Common::Vector3(w.x, w.y, w.z);
 }
 
 double Math::degreesToRadians(double d)
