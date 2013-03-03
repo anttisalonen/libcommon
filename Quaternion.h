@@ -7,13 +7,22 @@ namespace Common {
 
 class Quaternion {
 	public:
+		Quaternion();
 		Quaternion(float x_, float y_, float z_, float w_);
 		Quaternion conjugated() const;
 		float norm() const;
 		Quaternion versor() const;
+		Quaternion operator*(float f) const;
 		Quaternion operator*(const Vector3& v) const;
 		Quaternion operator*(const Quaternion& q) const;
+		Quaternion operator-() const;
+		Quaternion operator+(const Quaternion& q) const;
 		static Quaternion fromAxisAngle(const Vector3& axis, float angle);
+		float dot(const Quaternion& q2) const;
+		Quaternion slerp(const Quaternion& q2, float t) const;
+		void reset();
+
+		static Quaternion getRotationTo(const Vector3& from, const Vector3& to);
 
 		float x;
 		float y;
