@@ -69,6 +69,12 @@ bool Countdown::checkAndRewind()
 	}
 }
 
+bool Countdown::countdownAndRewind(float howmuch)
+{
+	doCountdown(howmuch);
+	return checkAndRewind();
+}
+
 void Countdown::rewind()
 {
 	mNow = mFrom;

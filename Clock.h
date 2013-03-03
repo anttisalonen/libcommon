@@ -19,12 +19,14 @@ class Countdown {
 		Countdown(float from);
 		void doCountdown(float howmuch);
 		bool checkAndRewind();
+		bool countdownAndRewind(float howmuch);
 		void rewind();
 		bool check();
 		bool running() const;
 		float timeLeft() const;
 		void clear();
 		float getMaxTime() const;
+
 	private:
 		float mFrom;
 		float mNow;
