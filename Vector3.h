@@ -34,7 +34,7 @@ class Vector3 {
 		inline float distance(const Vector3& v) const;
 		inline float distance2(const Vector3& v) const;
 		inline float cross2d(const Vector3& v) const;
-        inline Vector3 cross(const Vector3& v) const;
+		inline Vector3 cross(const Vector3& v) const;
 		inline void negate();
 		inline Vector3 negated() const;
 
