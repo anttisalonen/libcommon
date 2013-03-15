@@ -21,6 +21,7 @@ class Quaternion {
 		float dot(const Quaternion& q2) const;
 		Quaternion slerp(const Quaternion& q2, float t) const;
 		void reset();
+		void toEuler(float& rotx, float& roty, float& rotz) const;
 
 		static Quaternion getRotationTo(const Vector3& from, const Vector3& to);
 

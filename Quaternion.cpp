@@ -129,8 +129,8 @@ Quaternion Quaternion::getRotationTo(const Vector3& from, const Vector3& to)
 			axis = Vector3(0, 1, 0).cross(from);
 		return q.fromAxisAngle(axis.normalized(), PI);
 	} else {
-		float s = sqrt((1 + d) * 2);
-		float invs = 1 / s;
+		float s = sqrt((1.0f + d) * 2.0f);
+		float invs = 1.0f / s;
 		Vector3 c = v0.cross(v1);
 
 		q.x = c.x * invs;
@@ -145,6 +145,13 @@ void Quaternion::reset()
 {
 	x = y = z = 0.0f;
 	w = 1.0f;
+}
+
+void Quaternion::toEuler(float& rotx, float& roty, float& rotz) const
+{
+	rotx = atan2(2.0f * (w * x + y * z), 1.0f - 2.0f * (x * x + y * y));
+	roty = asin(2.0f * (w * y - z * x));
+	rotz = atan2(2.0f * (w * z + x * y), 1.0f - 2.0f * (y * y + z * z));
 }
 
 
