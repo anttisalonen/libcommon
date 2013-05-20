@@ -73,6 +73,23 @@ Quaternion Quaternion::fromAxisAngle(const Vector3& axis, float angle)
 	return Quaternion(s * axis.x, s * axis.y, s * axis.z, cos(half));
 }
 
+void Quaternion::toAxisAngle(Vector3& axis, float& angle) const
+{
+	// must have normalized q
+	Quaternion q = w > 1.0f ? versor() : *this;
+	angle = 2.0f * acos(q.w);
+	float sw = sqrt(1.0f - q.w * q.w);
+	if(sw < 0.0001f) {
+		axis.x = x;
+		axis.y = y;
+		axis.z = z;
+	} else {
+		axis.x = x / sw;
+		axis.y = y / sw;
+		axis.z = z / sw;
+	}
+}
+
 float Quaternion::dot(const Quaternion& q2) const
 {
 	return w * q2.w + x * q2.x + y * q2.y + z * q2.z;

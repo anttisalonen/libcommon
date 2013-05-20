@@ -18,6 +18,7 @@ class Quaternion {
 		Quaternion operator-() const;
 		Quaternion operator+(const Quaternion& q) const;
 		static Quaternion fromAxisAngle(const Vector3& axis, float angle);
+		void toAxisAngle(Vector3& axis, float& angle) const;
 		float dot(const Quaternion& q2) const;
 		Quaternion slerp(const Quaternion& q2, float t) const;
 		void reset();
