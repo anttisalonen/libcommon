@@ -18,6 +18,8 @@ struct Color {
 	inline bool operator<(const Color& f) const;
 	inline int operator-(const Color& f) const;
 	inline void mix(const Color& c);
+	inline unsigned char luminance() const;
+	inline float hue() const; // returns radians [-pi, pi]
 	unsigned char r, g, b;
 
 	static const Color Red;
@@ -69,6 +71,19 @@ void Color::mix(const Color& c)
 	r = r1 / 2;
 	g = g1 / 2;
 	b = b1 / 2;
+}
+
+unsigned char Color::luminance() const
+{
+	return 0.3 * r + 0.59 * g + 0.11 * b;
+}
+
+float Color::hue() const
+{
+	float rr = r / 255.0f;
+	float gg = g / 255.0f;
+	float bb = b / 255.0f;
+	return atan2(sqrt(3.0) * (gg - bb), 2.0 * rr - gg - bb);
 }
 
 }
