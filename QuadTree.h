@@ -6,7 +6,7 @@
 
 #include <iostream>
 #include <map>
-#include <stack>
+#include <queue>
 #include <vector>
 
 #include "Partition.h"
@@ -25,9 +25,11 @@ class QTIterator {
 		inline QTIterator& operator++();
 
 	private:
-		std::stack<QuadTree<T>*> mQTs;
-		unsigned int mLocation;
+		inline QTIterator& next();
+
+		std::queue<QuadTree<T>*> mQTs;
 		typename std::map<T, Vector2>::iterator mIt;
+		bool mEnd = false;
 };
 
 template<class T>
@@ -48,7 +50,7 @@ class QuadTree {
 		inline void subdivide();
 		inline bool updateClean(T& t, const Vector2& oldpos, const Vector2& newpos);
 		inline QuadTree<T>* find(T& t, const Vector2& pos);
-		static const int NODE_CAPACITY = 4;
+		static const unsigned int NODE_CAPACITY = 4;
 		constexpr static const float MIN_DIMENSION = 8.0f;
 		AABB mBoundary;
 		std::map<T, Vector2> mPoints;
@@ -272,63 +274,66 @@ QuadTree<T>* QuadTree<T>::find(T& t, const Vector2& pos)
 	return nullptr;
 }
 
+
 template<class T>
 QTIterator<T>::QTIterator(QuadTree<T>& qt, bool atend)
-	: mLocation(0)
 {
 	mQTs.push(&qt);
 	if(atend) {
-		if(qt.mNW)
-			mIt = qt.mSE->mPoints.end();
-		else
-			mIt = qt.mPoints.end();
+		mEnd = true;
 	} else {
 		mIt = qt.mPoints.begin();
+		// ensure valid iterator
+		next();
 	}
 }
 
 template<class T>
 bool QTIterator<T>::operator!=(const QTIterator<T>& other) const
 {
-	return mIt != other.mIt;
+	return mEnd != other.mEnd;
 }
 
 template<class T>
 QTIterator<T>& QTIterator<T>::operator++()
 {
+	assert(mIt != mQTs.front()->mPoints.end());
+	assert(!mEnd);
 	++mIt;
 
-	while(mIt == mQTs.top()->mPoints.end()) {
-		if(mLocation == 0) {
-			if(!mQTs.top()->mNW) {
-				assert(0);
-				return *this;
-			}
-			mQTs.push(mQTs.top()->mNW);
-			mLocation = 1;
-		} else if(mLocation == 1) {
-			mQTs.pop();
-			assert(!mQTs.empty());
-			mQTs.push(mQTs.top()->mNE);
-		} else if(mLocation == 2) {
-			mQTs.pop();
-			assert(!mQTs.empty());
-			mQTs.push(mQTs.top()->mSW);
-		} else if(mLocation == 3) {
-			mQTs.pop();
-			assert(!mQTs.empty());
-			mQTs.push(mQTs.top()->mSE);
-		} else {
-			// reached end
+	return next();
+
+}
+
+template<class T>
+inline QTIterator<T>& QTIterator<T>::next()
+{
+	assert(!mEnd);
+
+	while(mIt == mQTs.front()->mPoints.end()) {
+		auto oldtop = mQTs.front();
+		if(oldtop->mNW) {
+			mQTs.push(oldtop->mNW);
+			mQTs.push(oldtop->mNE);
+			mQTs.push(oldtop->mSW);
+			mQTs.push(oldtop->mSE);
+		}
+		mQTs.pop();
+		if(mQTs.empty()) {
+			// end
+			mEnd = true;
 			return *this;
 		}
-		mLocation++;
-		mIt = mQTs.top()->mPoints.begin();
+		mIt = mQTs.front()->mPoints.begin();
+	}
+
+	if(mIt == mQTs.front()->mPoints.end()) {
+		mEnd = true;
 	}
 
 	return *this;
 }
-
+	
 template<class T>
 QTIterator<T> QuadTree<T>::begin()
 {

@@ -22,6 +22,9 @@ class Vector2 {
 		inline void operator*=(float v);
 		inline Vector2 operator/(float v) const;
 		inline void operator/=(float v);
+		bool operator==(const Vector2& f) const;
+		bool operator!=(const Vector2& f) const;
+		bool operator<(const Vector2& f) const;
 		inline Vector2 normalized() const;
 		inline void normalize();
 		inline float length() const;
@@ -112,6 +115,23 @@ inline void Vector2::operator/=(float v)
 {
 	x /= v;
 	y /= v;
+}
+
+inline bool Vector2::operator==(const Vector2& f) const
+{
+	return x == f.x && y == f.y;
+}
+
+inline bool Vector2::operator!=(const Vector2& f) const
+{
+	return !(*this == f);
+}
+
+inline bool Vector2::operator<(const Vector2& f) const
+{
+	if(x != f.x)
+		return x < f.x;
+	return y < f.y;
 }
 
 Vector2 Vector2::normalized() const

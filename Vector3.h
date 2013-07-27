@@ -23,6 +23,9 @@ class Vector3 {
 		inline void operator*=(float v);
 		inline Vector3 operator/(float v) const;
 		inline void operator/=(float v);
+		bool operator==(const Vector3& f) const;
+		bool operator!=(const Vector3& f) const;
+		bool operator<(const Vector3& f) const;
 		inline Vector3 normalized() const;
 		inline void normalize();
 		inline float length() const;
@@ -123,6 +126,25 @@ inline void Vector3::operator/=(float v)
 	x /= v;
 	y /= v;
 	z /= v;
+}
+
+inline bool Vector3::operator==(const Vector3& f) const
+{
+	return x == f.x && y == f.y && z == f.z;
+}
+
+inline bool Vector3::operator!=(const Vector3& f) const
+{
+	return !(*this == f);
+}
+
+inline bool Vector3::operator<(const Vector3& f) const
+{
+	if(x != f.x)
+		return x < f.x;
+	if(y != f.y)
+		return y < f.y;
+	return z < f.z;
 }
 
 Vector3 Vector3::normalized() const

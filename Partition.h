@@ -2,14 +2,19 @@
 #define COMMON_PARTITION_H
 
 #include "Vector2.h"
+#include "Vector3.h"
 
 namespace Common {
 
 struct AABB {
 	Vector2 center;
 	Vector2 halfDimension;
-	AABB(const Vector2& c, const Vector2& hd) : center(c), halfDimension(hd) { }
+	AABB(const Vector2& c, const Vector2& hd) : center(c), halfDimension(hd) {
+		assert(hd.x >= 0.0f);
+		assert(hd.y >= 0.0f);
+	}
 	inline bool contains(const Vector2& p) const;
+	inline bool contains(const AABB& b) const;
 	inline bool intersects(const AABB& b) const;
 };
 
@@ -24,6 +29,14 @@ bool AABB::contains(const Vector2& p) const
 	float dx = fabs(p.x - center.x);
 	float dy = fabs(p.y - center.y);
 	return dx <= halfDimension.x && dy <= halfDimension.y;
+}
+
+bool AABB::contains(const AABB& b) const
+{
+	return center.x + halfDimension.x >= b.center.x + b.halfDimension.x &&
+		center.x - halfDimension.x <= b.center.x - b.halfDimension.x &&
+		center.y + halfDimension.y >= b.center.y + b.halfDimension.y &&
+		center.y - halfDimension.y <= b.center.y - b.halfDimension.y;
 }
 
 bool AABB::intersects(const AABB& b) const

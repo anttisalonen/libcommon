@@ -7,7 +7,7 @@
 
 using namespace Common;
 
-IPoint getRandomPoint()
+static IPoint getRandomPoint()
 {
 	IPoint point;
 	point.x = rand() % 10000 - 5000;
