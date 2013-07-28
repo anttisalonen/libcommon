@@ -33,6 +33,7 @@ class Vehicle : public Obstacle {
 		float getMaxSpeed() const { return mMaxSpeed; }
 		float getMaxAcceleration() const { return mMaxAcceleration; }
 		virtual inline void update(float time) override;
+		void setMaxSpeed(float s) { mMaxSpeed = s; }
 
 	protected:
 		float mMaxSpeed;
