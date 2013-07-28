@@ -1,6 +1,7 @@
 #include <sys/time.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <assert.h>
 
 #include <iostream>
 #include <algorithm>
@@ -121,7 +122,12 @@ bool SteadyTimer::check(float elapsedtime)
 {
 	mLeftTime -= elapsedtime;
 	if(mLeftTime <= 0.0f) {
-		mLeftTime = mStepTime;
+		mLeftTime += mStepTime;
+		if(mLeftTime <= 0.0f) {
+			int steps = fabs((mLeftTime - mStepTime) / mStepTime);
+			mLeftTime += steps * mStepTime;
+			assert(mLeftTime >= 0.0f && mLeftTime <= mStepTime);
+		}
 		return true;
 	}
 	else {
