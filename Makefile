@@ -9,7 +9,7 @@ CXXFLAGS += $(shell sdl-config --cflags)
 
 COMMONSRCS = TextRenderer.cpp DriverFramework.cpp SDLSurface.cpp \
 	     Texture.cpp SDL_utils.cpp Color.cpp Math.cpp Clock.cpp \
-	     Steering.cpp Random.cpp Matrix44.cpp Quaternion.cpp \
+	     Steering.cpp Random.cpp Matrix22.cpp Matrix44.cpp Quaternion.cpp \
 	     Line.cpp Geometry.cpp
 COMMONOBJS = $(COMMONSRCS:.cpp=.o)
 COMMONDEPS = $(COMMONSRCS:.cpp=.dep)
