@@ -27,6 +27,13 @@ class Matrix22 {
 		float m[4];
 };
 
+inline std::ostream& operator<<(std::ostream& out, const Matrix22& m)
+{
+	out << "[" << m.m[0] << " " << m.m[1] << "]\n";
+	out << "[" << m.m[2] << " " << m.m[3] << "]";
+	return out;
+}
+
 }
 
 #endif

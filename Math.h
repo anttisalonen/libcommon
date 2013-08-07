@@ -3,6 +3,7 @@
 
 #include <algorithm>
 
+#include "Vector2.h"
 #include "Vector3.h"
 #include "Quaternion.h"
 
@@ -54,6 +55,7 @@ class Math {
 				const Vector3& c, float radius);
 		static bool tps(const Vector3& pos,
 				const Vector3& vel, float c, float& ret1, float& ret2);
+		static Vector2 rotate2D(const Vector2& v, float angle);
 		static Vector3 rotate2D(const Vector3& v, float angle);
 		static Vector3 rotate3D(const Vector3& v, float angle, const Vector3& axe);
 		static Vector3 rotate3D(const Vector3& v, const Common::Quaternion& q);

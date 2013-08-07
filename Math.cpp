@@ -161,6 +161,16 @@ bool Math::tps(const Vector3& pos,
 	return true;
 }
 
+Vector2 Math::rotate2D(const Vector2& v, float angle)
+{
+	Vector2 rot(v);
+
+	rot.x = v.x * cos(angle) - v.y * sin(angle);
+	rot.y = v.x * sin(angle) + v.y * cos(angle);
+
+	return rot;
+}
+
 Vector3 Math::rotate2D(const Vector3& v, float angle)
 {
 	Vector3 rot(v);
