@@ -33,6 +33,9 @@ T clamp(T minv, T v, T maxv)
 
 class Math {
 	public:
+		static double pointToLineDistance(const Vector2& l1,
+				const Vector2& l2,
+				const Vector2& p);
 		static double pointToLineDistance(const Vector3& l1,
 				const Vector3& l2,
 				const Vector3& p);
