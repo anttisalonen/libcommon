@@ -39,6 +39,9 @@ class Math {
 		static double pointToLineDistance(const Vector3& l1,
 				const Vector3& l2,
 				const Vector3& p);
+		static double pointToSegmentDistance(const Vector2& l1,
+				const Vector2& l2,
+				const Vector2& p, Vector2* nearest = nullptr);
 		static double pointToSegmentDistance(const Vector3& l1,
 				const Vector3& l2,
 				const Vector3& p, Vector3* nearest = nullptr);

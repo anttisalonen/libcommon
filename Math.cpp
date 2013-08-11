@@ -27,6 +27,33 @@ double Math::pointToLineDistance(const Vector3& l1,
 		return (p - l1).length();
 }
 
+double Math::pointToSegmentDistance(const Vector2& l1,
+		const Vector2& l2,
+		const Vector2& p, Vector2* nearest)
+{
+	const float dist2 = l1.distance2(l2);
+	if (dist2 == 0.0f) {
+		if(nearest)
+			*nearest = l1;
+		return p.distance(l1);
+	}
+	const float t = (p - l1).dot(l2 - l1) * (1.0f / dist2);
+	if (t < 0.0f) {
+		if(nearest)
+			*nearest = l1;
+		return p.distance(l1);
+	}
+	else if (t > 1.0f) {
+		if(nearest)
+			*nearest = l2;
+		return p.distance(l2);
+	}
+	const Vector2 projection = l1 + (l2 - l1) * t;
+	if(nearest)
+		*nearest = projection;
+	return p.distance(projection);
+}
+
 double Math::pointToSegmentDistance(const Vector3& l1,
 		const Vector3& l2,
 		const Vector3& p, Vector3* nearest)
