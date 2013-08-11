@@ -38,6 +38,7 @@ class Vector2 {
 		inline float cross2d(const Vector2& v) const;
 		inline void negate();
 		inline Vector2 negated() const;
+		inline float angleTo(const Vector2& v) const;
 
 	private:
 		friend class boost::serialization::access;
@@ -211,6 +212,14 @@ inline Vector2 Vector2::negated() const
 	Vector2 v(*this);
 	v.negate();
 	return v;
+}
+
+inline float Vector2::angleTo(const Vector2& v) const
+{
+	float l = length();
+	float l2 = v.length();
+	float dt = dot(v);
+	return acos(dt / (l * l2));
 }
 
 }

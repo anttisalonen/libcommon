@@ -42,6 +42,10 @@ class Math {
 		static double pointToSegmentDistance(const Vector3& l1,
 				const Vector3& l2,
 				const Vector3& p, Vector3* nearest = nullptr);
+		static Vector2 lineLineIntersection2D(const Vector2& p1,
+				const Vector2& p2,
+				const Vector2& p3,
+				const Vector2& p4);
 		static Vector3 lineLineIntersection2D(const Vector3& p1,
 				const Vector3& p2,
 				const Vector3& p3,
