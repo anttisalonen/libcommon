@@ -10,3 +10,8 @@ add_library(common TextRenderer.cpp DriverFramework.cpp SDLSurface.cpp
 	     Line.cpp Geometry.cpp)
 add_executable(common_test GeometryTest.cpp QuadtreeTest.cpp test.cpp)
 target_link_libraries(common_test common)
+
+install (TARGETS common DESTINATION lib)
+install (FILES AStar.h Color.h FontConfig.h LineQuadTree.h Matrix44.h Quaternion.h SDLSurface.h Steering.h Vector2.h
+	CellSpacePartition.h DriverFramework.h Geometry.h Math.h Partition.h Random.h SDL_utils.h TextRenderer.h Vector3.h
+	Clock.h Entity.h Line.h Matrix22.h QuadTree.h Rectangle.h Serialization.h Texture.h Vehicle.h DESTINATION include/common)
