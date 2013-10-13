@@ -63,6 +63,10 @@ class Math {
 		static bool segmentCircleIntersect(const Vector3& l1,
 				const Vector3& l2,
 				const Vector3& c, float radius);
+		static bool raySphereIntersect(const Vector3& l1,
+				const Vector3& l2,
+				const Vector3& center, float radius);
+		static int solveQuadratic(float a, float b, float c, float& r1, float& r2);
 		static bool tps(const Vector3& pos,
 				const Vector3& vel, float c, float& ret1, float& ret2);
 		static Vector2 rotate2D(const Vector2& v, float angle);
