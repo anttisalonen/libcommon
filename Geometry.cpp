@@ -102,7 +102,7 @@ bool Polygon::pointInPolygon(const IPoint& p) const
 	}
 
 	// http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
-	int i, j;
+	unsigned int i, j;
 	bool c = false;
 	for (i = 0, j = mPoints.size() - 1; i < mPoints.size(); j = i++) {
 		if (((mPoints[i].y > p.y) != (mPoints[j].y > p.y)) &&
@@ -127,7 +127,7 @@ bool Polygon::isSimple() const
 
 	if(mPoints.size() != 3) {
 		std::vector<std::pair<IPoint, IPoint>> segments;
-		int i, j;
+		unsigned int i, j;
 
 		for (i = 0, j = mPoints.size() - 1; i < mPoints.size(); j = i++) {
 			segments.push_back({mPoints[j], mPoints[i]});
@@ -164,7 +164,7 @@ const IPoint& Polygon::getCentroid() const
 	} else {
 		float a = getSignedArea();
 		if(a) {
-			int i, j;
+			unsigned int i, j;
 			for (i = 0, j = mPoints.size() - 1; i < mPoints.size(); j = i++) {
 				mCentroid.x += (mPoints[i].x + mPoints[j].x) *
 					(mPoints[i].x * mPoints[j].y - mPoints[j].x * mPoints[i].y);
@@ -183,7 +183,7 @@ float Polygon::getSignedArea() const
 	if(mSignedArea) {
 		return mSignedArea;
 	} else {
-		int i, j;
+		unsigned int i, j;
 		for (i = 0, j = mPoints.size() - 1; i < mPoints.size(); j = i++) {
 			mSignedArea += mPoints[i].x * mPoints[j].y - mPoints[j].x * mPoints[i].y;
 		}
