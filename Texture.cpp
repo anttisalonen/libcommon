@@ -60,7 +60,7 @@ GLuint Texture::loadTexture(const SDL_Surface* surf,
 		else
 			format = GL_BGR;
 	}
-	glTexImage2D(GL_TEXTURE_2D, 0, surf->format->BytesPerPixel, surf->w, height ? height : surf->h,
+	glTexImage2D(GL_TEXTURE_2D, 0, hasAlpha ? GL_RGBA8 : GL_RGB8, surf->w, height ? height : surf->h,
 			0, format, GL_UNSIGNED_BYTE,
 			(char*)surf->pixels + startrow * surf->w * surf->format->BytesPerPixel);
 	return texture;
