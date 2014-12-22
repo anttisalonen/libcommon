@@ -273,49 +273,8 @@ bool Math::raySphereIntersect(const Vector3& l1,
 		const Vector3& l2,
 		const Vector3& center, float radius)
 {
-	// http://stackoverflow.com/questions/5883169/intersection-between-a-line-and-a-sphere
-	float a = (l1.x - center.x) * (l1.x - center.x) +
-		  (l1.y - center.y) * (l1.y - center.y) +
-		  (l1.z - center.z) * (l1.z - center.z) -
-		  radius * radius;
-	float c = (l1.x - l2.x) * (l1.x - l2.x) +
-		  (l1.y - l2.y) * (l1.y - l2.y) +
-		  (l1.z - l2.z) * (l1.z - l2.z);
-	float b = (l2.x - center.x) * (l2.x - center.x) +
-		  (l2.y - center.y) * (l2.y - center.y) +
-		  (l2.z - center.z) * (l2.z - center.z) -
-		  a - c - radius * radius;
-
-	float r1, r2;
-	int res = solveQuadratic(a, b, c, r1, r2);
-	if(res == 0)
-		return 0;
-	else if(res == 1) {
-		return r1 >= 0.0f && r1 <= 1.0f;
-	} else {
-		return (r1 >= 0.0f && r1 <= 1.0f) ||
-			(r2 >= 0.0f && r2 <= 1.0f);
-	}
+	return segmentCircleIntersect(l1, l2, center, radius);
 }
-
-int Math::solveQuadratic(float a, float b, float c, float& r1, float& r2)
-{
-	if(a == 0.0f)
-		return 0;
-	float det = b * b - 4.0f * a * c;
-	if(det < 0.0f)
-		return 0;
-	if(det == 0) {
-		r1 = -b / (2.0f * a);
-		return 1;
-	} else {
-		float sq = sqrt(det);
-		r1 = (-b + sq) / (2.0f * a);
-		r2 = (-b - sq) / (2.0f * a);
-		return 2;
-	}
-}
-
 
 }
 
