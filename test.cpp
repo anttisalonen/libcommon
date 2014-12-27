@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cstdlib>
 
+int math_segment_segment_3d_distance(int argc, char** argv);
 int geometry(int argc, char** argv);
 int quadtree(int argc, char** argv);
 int linequadtree(int argc, char** argv);
@@ -32,6 +33,11 @@ int main(int argc, char** argv)
 
 	if(linequadtree(argc, argv)) {
 		std::cerr << "Quadtree test failed.\n";
+		failed = true;
+	}
+
+	if(math_segment_segment_3d_distance(argc, argv)) {
+		std::cerr << "Math segment-segment 3D distance test failed.\n";
 		failed = true;
 	}
 

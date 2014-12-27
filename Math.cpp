@@ -154,6 +154,79 @@ Vector3 Math::segmentSegmentIntersection2D(const Vector3& p1,
 	return p + r * t;
 }
 
+float Math::segmentSegmentDistance3D(const Vector3& p1,
+		const Vector3& p2,
+		const Vector3& p3,
+		const Vector3& p4)
+{
+	// http://geomalgorithms.com/a07-_distance.html
+	// Copyright 2001 softSurfer, 2012 Dan Sunday
+	// This code may be freely used and modified for any purpose
+	// providing that this copyright notice is included with it.
+	// SoftSurfer makes no warranty for this code, and cannot be held
+	// liable for any real or imagined damage resulting from its use.
+	// Users of this code must verify correctness for their application.
+	Vector3 u = p2 - p1;
+	Vector3 v = p4 - p3;
+	Vector3 w = p1 - p3;
+	float a = u.dot(u);
+	float b = u.dot(v);
+	float c = v.dot(v);
+	float d = u.dot(w);
+	float e = v.dot(w);
+	float D = a * c - b * b;
+	float sc, sN, sD = D;
+	float tc, tN, tD = D;
+
+	if(D < 0.0001f) { // almost parallel
+		sN = 0.0f;
+		sD = 1.0f;
+		tN = e;
+		tD = c;
+	} else {
+		sN = (b * e - c * d);
+		tN = (a * e - b * d);
+		if(sN < 0.0f) {
+			sN = 0.0f;
+			tN = e;
+			tD = c;
+		} else if(sN > sD) {
+			sN = sD;
+			tN = e + b;
+			tD = c;
+		}
+	}
+
+	if(tN < 0.0f) {
+		tN = 0.0f;
+		if(-d < 0.0f) {
+			sN = 0.0f;
+		} else if(-d > a) {
+			sN = sD;
+		} else {
+			sN = -d;
+			sD = a;
+		}
+	} else if(tN > tD) {
+		tN = tD;
+		if((-d + b) < 0.0f) {
+			sN = 0;
+		} else if((-d + b) > a) {
+			sN = sD;
+		} else {
+			sN = (-d + b);
+			sD = a;
+		}
+	}
+
+	sc = fabs(sN) < 0.001f ? 0.0f : (sN / sD);
+	tc = fabs(tN) < 0.001f ? 0.0f : (tN / tD);
+
+	Vector3 dP = w + (u * sc) - (v * tc);
+
+	return dP.length();
+}
+
 bool Math::lineCircleIntersect(const Vector3& l1,
 		const Vector3& l2,
 		const Vector3& c, float radius)

@@ -8,7 +8,7 @@ add_library(common TextRenderer.cpp DriverFramework.cpp SDLSurface.cpp
 	     Texture.cpp SDL_utils.cpp Color.cpp Math.cpp Clock.cpp
 	     Steering.cpp Random.cpp Matrix22.cpp Matrix44.cpp Quaternion.cpp
 	     Line.cpp Geometry.cpp)
-add_executable(common_test GeometryTest.cpp QuadtreeTest.cpp test.cpp)
+add_executable(common_test GeometryTest.cpp QuadtreeTest.cpp MathTest.cpp test.cpp)
 target_link_libraries(common_test common)
 
 install (TARGETS common DESTINATION lib)

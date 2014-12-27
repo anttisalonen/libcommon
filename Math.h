@@ -57,6 +57,10 @@ class Math {
 				const Vector3& p2,
 				const Vector3& p3,
 				const Vector3& p4, bool* found);
+		static float segmentSegmentDistance3D(const Vector3& p1,
+				const Vector3& p2,
+				const Vector3& p3,
+				const Vector3& p4);
 		static bool lineCircleIntersect(const Vector3& l1,
 				const Vector3& l2,
 				const Vector3& c, float radius);
