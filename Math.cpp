@@ -124,29 +124,51 @@ Vector3 Math::lineLineIntersection2D(const Vector3& p1,
 	}
 }
 
+Vector2 Math::segmentSegmentIntersection2D(const Vector2& p1,
+		const Vector2& p2,
+		const Vector2& p3,
+		const Vector2& p4, bool* found)
+{
+	return Math::segmentSegmentIntersection2D<Vector2>(p1, p2, p3, p4, found);
+}
+
 Vector3 Math::segmentSegmentIntersection2D(const Vector3& p1,
 		const Vector3& p2,
 		const Vector3& p3,
 		const Vector3& p4, bool* found)
 {
-	Vector3 p = p1;
-	Vector3 r = p2 - p1;
-	Vector3 q = p3;
-	Vector3 s = p4 - p3;
+	return Math::segmentSegmentIntersection2D<Vector3>(p1, p2, p3, p4, found);
+}
+
+template<typename T>
+T Math::segmentSegmentIntersection2D(const T& p1,
+		const T& p2,
+		const T& p3,
+		const T& p4, bool* found)
+{
+	T p = p1;
+	T r = p2 - p1;
+	T q = p3;
+	T s = p4 - p3;
 
 	float denom = r.cross2d(s);
 	if(denom == 0.0f) {
 		// parallel
 		if(found)
 			*found = false;
-		return Vector3();
+		return T();
 	}
 
 	float t = (q - p).cross2d(s) / denom;
-	if(t < 0.0f || t > 1.0f) {
+	float u = (q - p).cross2d(r) / denom;
+
+	if(t < 0.0f || t > 1.0f || u < 0.0f || u > 1.0f) {
 		if(found)
 			*found = false;
-		return Vector3();
+		if(t < 0.0f)
+			return p;
+		else
+			return p + r;
 	}
 
 	if(found)
@@ -347,6 +369,18 @@ bool Math::raySphereIntersect(const Vector3& l1,
 		const Vector3& center, float radius)
 {
 	return segmentCircleIntersect(l1, l2, center, radius);
+}
+
+bool Math::isInsideTriangle(const Common::Vector2& p,
+		const Common::Vector2& p1,
+		const Common::Vector2& p2,
+		const Common::Vector2& p3)
+{
+	// http://stackoverflow.com/a/14382692/484899
+	float area = 1.0f / 2.0f * (-p2.y * p3.x + p1.y * (-p2.x + p3.x) + p1.x * (p2.y - p3.y) + p2.x * p3.y);
+	float s = 1.0f / (2.0f * area) * (p1.y * p3.x - p1.x * p3.y + (p3.y - p1.y) * p.x + (p1.x - p3.x) * p.y);
+	float t = 1.0f / (2.0f * area) * (p1.x * p2.y - p1.y * p2.x + (p1.y - p2.y) * p.x + (p2.x - p1.x) * p.y);
+	return s > 0.0f and t > 0.0f && 1 - s - t > 0.0f;
 }
 
 }

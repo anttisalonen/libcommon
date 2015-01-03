@@ -53,10 +53,20 @@ class Math {
 				const Vector3& p2,
 				const Vector3& p3,
 				const Vector3& p4);
+		static Vector2 segmentSegmentIntersection2D(const Vector2& p1,
+				const Vector2& p2,
+				const Vector2& p3,
+				const Vector2& p4, bool* found);
+		// uses p.x, p.y
 		static Vector3 segmentSegmentIntersection2D(const Vector3& p1,
 				const Vector3& p2,
 				const Vector3& p3,
 				const Vector3& p4, bool* found);
+		template<typename T>
+		static T segmentSegmentIntersection2D(const T& p1,
+				const T& p2,
+				const T& p3,
+				const T& p4, bool* found);
 		static float segmentSegmentDistance3D(const Vector3& p1,
 				const Vector3& p2,
 				const Vector3& p3,
@@ -79,6 +89,12 @@ class Math {
 		static Vector3 rotate3D(const Vector3& v, const Common::Quaternion& q);
 		static double degreesToRadians(double d);
 		static double radiansToDegrees(double r);
+
+		static bool isInsideTriangle(const Common::Vector2& p,
+				const Common::Vector2& p1,
+				const Common::Vector2& p2,
+				const Common::Vector2& p3);
+
 };
 
 }
