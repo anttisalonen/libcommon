@@ -35,7 +35,7 @@ class Countdown {
 
 class SteadyTimer {
 	public:
-		SteadyTimer(float steptime);
+		SteadyTimer(float steptime, float randomInit = 0.0f);
 		bool check(float elapsedtime);
 
 	private:

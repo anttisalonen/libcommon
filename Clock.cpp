@@ -8,6 +8,7 @@
 
 #include "Clock.h"
 #include "Random.h"
+#include "Math.h"
 
 namespace Common {
 
@@ -112,10 +113,12 @@ float Countdown::getMaxTime() const
 	return mFrom;
 }
 
-SteadyTimer::SteadyTimer(float steptime)
+SteadyTimer::SteadyTimer(float steptime, float randomInit)
 	: mStepTime(steptime)
 {
-	mLeftTime = Random::uniform() * mStepTime;
+	if(!randomInit)
+		randomInit = Random::uniform();
+	mLeftTime = clamp(0.0f, randomInit, 1.0f) * mStepTime;
 }
 
 bool SteadyTimer::check(float elapsedtime)

@@ -5,6 +5,7 @@
 #include <GL/gl.h>
 
 #include "Clock.h"
+#include "Random.h"
 
 namespace Common {
 
@@ -49,7 +50,7 @@ void Driver::run()
 		double newTime = Clock::getTime();
 		double frameTime = mFixedFrameTime ? mFixedFrameTime : newTime - prevTime;
 		if(!isPaused() && mFixedFrameTime && mRandomise) {
-			double add = rand() / (double)RAND_MAX;
+			double add = Random::uniform();
 			add -= 0.5f;
 			add *= 0.01f * mFixedFrameTime;
 			frameTime += add;
