@@ -46,7 +46,9 @@ void Driver::run()
 		return;
 
 	double prevTime = Clock::getTime();
-	while(1) {
+	bool quitting = false;
+
+	while(!quitting) {
 		double newTime = Clock::getTime();
 		double frameTime = mFixedFrameTime ? mFixedFrameTime : newTime - prevTime;
 		if(!isPaused() && mFixedFrameTime && mRandomise) {
@@ -57,18 +59,25 @@ void Driver::run()
 		}
 		prevTime = newTime;
 
-		if(prerenderUpdate(frameTime))
-			break;
+		auto ta = mTimeAcceleration;
 
-		if(!mDisableGUI && handleInput(frameTime))
-			break;
+		while(ta >= 1) {
+			if(prerenderUpdate(frameTime))
+				quitting = true;
 
-		if(!mDisableGUI) {
-			render();
+			if(ta == 1) {
+				if(!mDisableGUI && handleInput(frameTime))
+					quitting = true;
+
+				if(!mDisableGUI) {
+					render();
+				}
+			}
+
+			if(postrenderUpdate(frameTime))
+				quitting = true;
+			ta--;
 		}
-
-		if(postrenderUpdate(frameTime))
-			break;
 	}
 	return;
 }
@@ -81,6 +90,17 @@ unsigned int Driver::getScreenWidth() const
 unsigned int Driver::getScreenHeight() const
 {
 	return mScreenHeight;
+}
+
+void Driver::setTimeAcceleration(unsigned int i)
+{
+	if(i != 0)
+		mTimeAcceleration = i;
+}
+
+unsigned int Driver::getTimeAcceleration() const
+{
+	return mTimeAcceleration;
 }
 
 void Driver::render()

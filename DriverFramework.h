@@ -13,6 +13,8 @@ class Driver {
 		void run();
 		unsigned int getScreenWidth() const;
 		unsigned int getScreenHeight() const;
+		void setTimeAcceleration(unsigned int i);
+		unsigned int getTimeAcceleration() const;
 
 	protected:
 		virtual void render();
@@ -40,6 +42,7 @@ class Driver {
 		bool mDisableGUI;
 		float mFixedFrameTime;
 		bool mRandomise;
+		unsigned int mTimeAcceleration = 1;
 };
 
 }
