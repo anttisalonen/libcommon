@@ -52,3 +52,22 @@ int math_segment_segment_3d_distance(int argc, char** argv)
 
 	return 0;
 }
+
+int math_quaternion(int argc, char** argv)
+{
+	Vector3 v(0.0, 1.0, 0.0);
+	Quaternion q(sqrt(0.5), 0.0, 0.0, sqrt(0.5)); // 90 degree rotation around X
+	Vector3 v2 = q.multiply(v); // should point towards +Z
+	std::cout << v2.x << " " << v2.y << " " << v2.z << "\n";
+	if(fabs(v2.x - 0.0) > 0.05f) {
+		return 1;
+	}
+	if(fabs(v2.y - 0.0) > 0.05f) {
+		return 1;
+	}
+	if(fabs(v2.z - 1.0) > 0.05f) {
+		return 1;
+	}
+	return 0;
+}
+

@@ -56,6 +56,18 @@ Quaternion Quaternion::operator*(const Quaternion& q) const
 	return Quaternion(x_, y_, z_, w_);
 }
 
+Vector3 Quaternion::multiply(const Vector3& v) const
+{
+	Vector3 cp1, cp2;
+	Vector3 q(x, y, z);
+	cp1 = q.cross(v);
+	cp2 = q.cross(cp1);
+	cp1 = cp1 * (2.0f * w);
+	cp2 = cp2 * 2.0f;
+
+	return v + cp1 + cp2;
+}
+
 Quaternion Quaternion::operator-() const
 {
 	return Quaternion(-x, -y, -z, -w);

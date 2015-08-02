@@ -17,6 +17,7 @@ class Quaternion {
 		Quaternion operator*(const Quaternion& q) const;
 		Quaternion operator-() const;
 		Quaternion operator+(const Quaternion& q) const;
+		Vector3 multiply(const Vector3& v) const;
 		static Quaternion fromAxisAngle(const Vector3& axis, float angle);
 		void toAxisAngle(Vector3& axis, float& angle) const;
 		float dot(const Quaternion& q2) const;

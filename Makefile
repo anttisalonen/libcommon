@@ -17,7 +17,7 @@ COMMONLIB = libcommon.a
 
 BINDIR = bin
 TESTBIN = common_test
-TESTSRCS = GeometryTest.cpp QuadtreeTest.cpp test.cpp
+TESTSRCS = GeometryTest.cpp QuadtreeTest.cpp MathTest.cpp test.cpp
 TESTOBJS = $(TESTSRCS:.cpp=.o)
 TESTDEPS = $(TESTSRCS:.cpp=.dep)
 
